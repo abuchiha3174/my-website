@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">Portfolio</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header id="site-header">
+    <nav class="nav-inner">
+      <a href="#hero" class="nav-logo" id="nav-name">AS</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#roles">Roles</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#publication">Research</a></li>
+        <li><a href="#samples">Samples</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <section id="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-content">
+      <div class="hero-avatar-wrap">
+        <img id="hero-avatar" src="assets/images/avatar.jpg" alt="Abhishek Singh"
+             onerror="this.style.display='none'; document.getElementById('avatar-initials').style.display='flex'">
+        <div id="avatar-initials" class="avatar-initials" style="display:none">AS</div>
+      </div>
+      <div class="hero-text">
+        <p class="hero-eyebrow">Hi, I'm</p>
+        <h1 id="hero-name"></h1>
+        <p id="hero-tagline" class="hero-tagline"></p>
+        <div class="hero-badges" id="hero-badges"></div>
+        <div class="hero-cta">
+          <a href="#roles" class="btn btn-primary">Explore My Work</a>
+          <a href="#contact" class="btn btn-outline">Get In Touch</a>
+        </div>
+      </div>
+    </div>
+    <a href="#about" class="scroll-hint" aria-label="Scroll down">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </a>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="section-label">About</span>
+          <h2>Who I Am</h2>
+          <p id="about-bio"></p>
+          <div class="about-meta" id="about-meta"></div>
+        </div>
+        <div class="about-edu" id="about-edu"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roles">
+    <div class="container">
+      <span class="section-label">My 5 Tracks</span>
+      <h2>Choose a Role</h2>
+      <p class="section-sub">I have tailored my experience across five professional tracks. Select one to see relevant skills, projects, and resume.</p>
+      <div class="role-tabs" id="role-tabs"></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <div class="projects-header">
+        <div>
+          <span class="section-label" id="proj-label">Projects</span>
+          <h2 id="proj-heading">Featured Projects</h2>
+          <p id="proj-tagline" class="section-sub"></p>
+        </div>
+        <a id="resume-btn" href="#" class="btn btn-primary" download>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Download Resume
+        </a>
+      </div>
+      <div class="skills-row" id="skills-row"></div>
+      <div class="projects-grid" id="projects-grid"></div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="container">
+      <span class="section-label">Career</span>
+      <h2>Experience</h2>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
+
+  <section id="publication">
+    <div class="container">
+      <span class="section-label">Research</span>
+      <h2>Published Work</h2>
+      <div class="pub-card" id="pub-card"></div>
+    </div>
+  </section>
+
+  <section id="samples">
+    <div class="container">
+      <span class="section-label">Portfolio</span>
+      <h2>Work Samples</h2>
+      <p class="section-sub">PDFs, screenshots, and live links showcasing my work.</p>
+      <div class="samples-grid" id="samples-grid"></div>
+      <p class="samples-hint">To add more samples, drop files into the samples/ folder and add an entry in data.js workSamples array.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <span class="section-label">Let's Talk</span>
+      <h2>Contact Me</h2>
+      <p class="section-sub" id="contact-avail"></p>
+      <div class="contact-grid">
+        <div class="contact-info" id="contact-info"></div>
+        <form class="contact-form" id="contact-form">
+          <div class="form-row">
+            <input type="text" name="name" placeholder="Your Name" required />
+            <input type="email" name="email" placeholder="Your Email" required />
+          </div>
+          <input type="text" name="subject" placeholder="Subject" />
+          <textarea name="message" rows="5" placeholder="Your message..." required></textarea>
+          <button type="submit" class="btn btn-primary" id="form-submit">Send Message</button>
+          <p class="form-note" id="form-note"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer id="site-footer">
+    <div class="footer-inner">
+      <p id="footer-name"></p>
+      <div class="footer-links" id="footer-links"></div>
+      <p class="footer-credit">Built with HTML, CSS, JS. Hosted on GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
