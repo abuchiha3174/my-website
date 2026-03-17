@@ -15,7 +15,7 @@ const PORTFOLIO_DATA = {
         email: "abhishek.x.singh95@gmail.com",
         phone: "585-957-5864",
         linkedin: "https://www.linkedin.com/in/absingh95/",
-        github: "https://github.com/absingh95", // ← update if different
+        github: "https://github.com/abuchiha3174", // ← update if different
         avatar: "assets/images/avatar.jpg", // ← replace with your photo
         bio: "I'm a Data Science graduate student at RIT with hands-on experience spanning AI engineering, ML research, and data analytics. I've shipped production LLM systems, first-authored a peer-reviewed publication at EvoStar 2026, and led experiments on a 2,304-core HPC cluster. I tailor my skills across five professional tracks — find the one that fits your team.",
         resumeFiles: {
