@@ -13,7 +13,6 @@ const PORTFOLIO_DATA = {
         tagline: "MS Data Science @ RIT · GPA 3.9 · Published Researcher",
         location: "Rochester, NY (Ready for relocation)",
         email: "abhishek.x.singh95@gmail.com",
-        phone: "585-957-5864",
         linkedin: "https://www.linkedin.com/in/absingh95/",
         github: "https://github.com/abuchiha3174", // ← update if different
         avatar: "assets/images/avatar.jpg", // ← replace with your photo
@@ -63,15 +62,28 @@ const PORTFOLIO_DATA = {
         }
     ],
 
-    // ── PUBLICATION ───────────────────────────────────────────
-    publication: {
-        title: "Biologically-Inspired Homeostasis for Neuroevolution: Alternating Growth and Pruning Phases",
-        authors: "Singh, A., Lyu, Z., Desell, T.",
-        venue: "EvoStar 2026",
-        status: "Accepted",
-        summary: "Reduced evolved neural model size by 23% (103.1 → 79.0 parameters, p = 0.0019) without degrading validation MSE using phase-controlled grow–prune schedules in distributed neuroevolution for time-series forecasting.",
-        pdfLink: "samples/2026_evostar_grow_shrink.pdf"
-    },
+    // ── PUBLICATIONS ──────────────────────────────────────────
+    publications: [{
+            title: "Biologically-Inspired Homeostasis for Neuroevolution: Alternating Growth and Pruning Phases",
+            authors: "Singh, A., Lyu, Z., Desell, T.",
+            venue: "EvoStar 2026",
+            status: "Accepted",
+            summary: "Reduced evolved neural model size by 23% (103.1 → 79.0 parameters, p = 0.0019) without degrading validation MSE using phase-controlled grow–prune schedules in distributed neuroevolution for time-series forecasting.",
+            pdfLink: "samples/2026_evostar_grow_shrink.pdf",
+            resultNum: "23%",
+            resultLabel: "Model size reduction (p = 0.0019)"
+        },
+        {
+            title: "Repopulation Frequency as the Governing Parameter for Bias Correction in Asynchronous Parallel Evolutionary Neural Architecture Search",
+            authors: "Singh, A., Lyu, Z., Desell, T.",
+            venue: "PPSN 2026",
+            status: "Accepted",
+            summary: "Ran a 24-condition factorial ablation (4 bias-correction strategies × 6 island repopulation frequencies × 10 trials = 240 runs, ~2.4M genome evaluations) on a 2,304-core cluster comparing published correction methods (Harada, SWEET) against a vanilla baseline. Finding: repopulation frequency — not the explicit correction strategy — is the dominant lever on evaluation-time bias in asynchronous island-based search.",
+            pdfLink: "", // ← add samples/2026_ppsn_time_bias-final.pdf here once copied into samples/
+            resultNum: "2.4M",
+            resultLabel: "Model evaluations across 240 runs (Mann-Whitney U)"
+        }
+    ],
 
     // ── ROLES (5 tracks) ──────────────────────────────────────
     roles: [{
@@ -172,6 +184,15 @@ const PORTFOLIO_DATA = {
                     demo: "",
                     image: "assets/images/proj_compliance.png",
                     highlights: ["Policy anomaly detection", "Multi-modal AI", "Risk modeling analogy"]
+                },
+                {
+                    title: "Hospital 30-Day Readmission Prediction",
+                    tags: ["Python", "Scikit-learn", "XGBoost", "SMOTE"],
+                    description: "Built an end-to-end classification pipeline predicting 30-day hospital readmissions — a US federal reimbursement-penalty trigger — across 130+ hospitals. Used SMOTE to address severe class imbalance and grid-search tuning to reach 85.9% F1, then translated feature importances into plain-language risk drivers for a clinical, non-technical audience.",
+                    github: "",
+                    demo: "",
+                    image: "assets/images/proj_readmission.png",
+                    highlights: ["130+ hospitals", "85.9% F1 with SMOTE", "Clinical interpretability"]
                 }
             ]
         },
@@ -200,6 +221,15 @@ const PORTFOLIO_DATA = {
                     demo: "samples/2026_evostar_grow_shrink.pdf",
                     image: "assets/images/proj_neuroevo.png",
                     highlights: ["Peer-reviewed EvoStar 2026", "23% model compression", "Bio-inspired design"]
+                },
+                {
+                    title: "Fake News Detection & Generalization Study",
+                    tags: ["RoBERTa", "XGBoost", "Random Forest", "NLP"],
+                    description: "Built a fake-news classifier on RoBERTa embeddings with ensemble models (XGBoost, Random Forest, stacking), reaching 99.8% F1 on 50K+ in-sample articles. Deliberately stress-tested it out-of-domain and exposed a 56% performance collapse — proving the in-sample score reflected dataset artifacts rather than real generalization. The failure was the finding, not the accuracy number.",
+                    github: "",
+                    demo: "",
+                    image: "assets/images/proj_fakenews.png",
+                    highlights: ["99.8% F1 in-sample", "56% out-of-domain collapse exposed", "Dataset-artifact diagnosis"]
                 }
             ]
         },
