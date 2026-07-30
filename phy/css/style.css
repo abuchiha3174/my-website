@@ -121,14 +121,48 @@
     color: var(--accent);
     border: 1px solid transparent;
   }
-  .crosslink { margin-top: 2px; }
+  .crosslink { margin-top: 6px; }
   .crosslink a {
-    font-size: 13.5px;
-    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--paper);
+    background: var(--accent);
     text-decoration: none;
-    border-bottom: 1px solid var(--accent-soft);
+    padding: 10px 16px 10px 14px;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
-  .crosslink a:hover { border-bottom-color: var(--accent); }
+  .crosslink a:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(20,30,35,0.18), 0 12px 24px rgba(20,30,35,0.14);
+  }
+  .crosslink a:active { transform: translateY(0); }
+  .crosslink a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .crosslink a .arrow { display: inline-block; transition: transform 0.15s ease; }
+  .crosslink a:hover .arrow { transform: translateX(3px); }
+
+  .crosslink-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 7px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    background: var(--paper-raised);
+    transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+    white-space: nowrap;
+  }
+  .crosslink-back:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  .crosslink-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
   /* ---------- Phase tracker ---------- */
   .phase-tracker {
