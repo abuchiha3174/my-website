@@ -121,6 +121,14 @@
     color: var(--accent);
     border: 1px solid transparent;
   }
+  .crosslink { margin-top: 2px; }
+  .crosslink a {
+    font-size: 13.5px;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-soft);
+  }
+  .crosslink a:hover { border-bottom-color: var(--accent); }
 
   /* ---------- Phase tracker ---------- */
   .phase-tracker {
