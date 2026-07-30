@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>PhD Vision — Beyond the Fall Project</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .eyebrow-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .crosslink-back { font-size: 13.5px; color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  .crosslink-back:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .finding {
+    background: var(--measured-soft); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 16px 18px; margin-bottom: 34px; box-shadow: var(--shadow);
+  }
+  .finding .tag { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--measured); font-weight: 700; }
+  .finding p { margin: 8px 0 0; font-size: 14.5px; }
+
+  section.block { margin-bottom: 36px; }
+  h2.block-title { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; font-size: 21px; margin: 0 0 6px; font-weight: 600; }
+  .block-note { color: var(--ink-soft); font-size: 14px; margin: 0 0 20px; max-width: 68ch; }
+
+  .direction-card {
+    background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 18px;
+  }
+  .direction-card .dtag {
+    font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; display: block; margin-bottom: 8px;
+  }
+  .direction-card h3 { font-family: "Iowan Old Style", Palatino, Georgia, serif; font-size: 18px; margin: 0 0 10px; font-weight: 600; }
+  .sop-text {
+    font-size: 15px; line-height: 1.65; color: var(--ink); border-left: 3px solid var(--accent-soft);
+    padding-left: 14px; margin: 0;
+  }
+
+  .pitch-box {
+    background: var(--accent-soft); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 18px 20px; margin-bottom: 34px;
+  }
+  .pitch-box .ptag { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); font-weight: 700; display: block; margin-bottom: 10px; }
+  .pitch-box p { font-size: 15px; line-height: 1.65; margin: 0 0 10px; }
+  .pitch-box p:last-child { margin-bottom: 0; }
+
+  footer.page-footer { border-top: 1px solid var(--rule); padding-top: 18px; font-size: 12.5px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="notebook-header">
+    <div class="eyebrow-row">
+      <span class="eyebrow">Physics gap · study notebook</span>
+      <a class="crosslink-back" href="research-direction.html">&larr; Back to research direction</a>
+    </div>
+    <h1 class="title serif">PhD Vision — Beyond the Fall Project</h1>
+    <p class="subtitle">The fall pulse-suppression project isn't the PhD itself &mdash; it's the
+    seed of one. This page holds draft language for the SOP "vision" paragraph: where this line of
+    work could grow into a multi-year research program, and the spoken identity pitch for framing
+    yourself to these labs.</p>
+    <div class="source-links">
+      <span class="source-chip">Draft SOP language</span>
+      <span class="source-chip">Adapt, don&#39;t copy verbatim</span>
+    </div>
+  </header>
+
+  <div class="finding">
+    <span class="tag">Caveat &mdash; read before using any of this</span>
+    <p>These directions are illustrative of where this work could lead, not a fixed roadmap or a
+    promise from any lab. Not something Siddiqi, Oliver, or Fitzpatrick have confirmed they'd
+    offer &mdash; worth asking directly: <i>"if I came in having done this, what would a PhD
+    growing out of it actually look like in your lab?"</i> A PhD's real shape gets defined with an
+    advisor after admission, not locked in beforehand.</p>
+  </div>
+
+  <section class="block">
+    <h2 class="block-title serif">Four directions this could grow into</h2>
+    <p class="block-note">Each is SOP-ready draft prose &mdash; edit into your own voice, don't
+    paste verbatim.</p>
+
+    <div class="direction-card">
+      <span class="dtag">Direction 1 &middot; Generalization</span>
+      <h3>Does a suppression strategy transfer across materials?</h3>
+      <p class="sop-text">A natural next question is whether a suppression strategy learned on
+      one material system transfers to another, or whether each material's distinct defect
+      ensemble demands its own learned control strategy. Answering this would clarify whether
+      machine-learned pulse control constitutes a general-purpose tool for defect mitigation or a
+      per-material calibration procedure &mdash; a distinction with direct consequences for how
+      such methods could be deployed at scale.</p>
+    </div>
+
+    <div class="direction-card">
+      <span class="dtag">Direction 2 &middot; Adaptive / online control</span>
+      <h3>Can suppression track a drifting defect bath?</h3>
+      <p class="sop-text">Because TLS parameters drift over time, a pulse sequence optimized once
+      will not remain optimal indefinitely. A second direction extends this static optimization
+      into an adaptive, online control loop that continuously re-estimates and adjusts the
+      suppression pulse as the defect bath evolves &mdash; directly in the spirit of adaptive
+      Hamiltonian-tracking approaches already pursued in this space.</p>
+    </div>
+
+    <div class="direction-card">
+      <span class="dtag">Direction 3 &middot; Bridging to real qubits</span>
+      <h3>Does it survive contact with a real fabricated device?</h3>
+      <p class="sop-text">A third direction addresses translation: BCTDS characterizes defect
+      ensembles through a broadband waveguide, independent of full device fabrication. Whether a
+      suppression strategy discovered in this platform meaningfully improves gate fidelity on an
+      actual fabricated qubit coupled to the same class of defects is an open, and consequential,
+      translational question.</p>
+    </div>
+
+    <div class="direction-card">
+      <span class="dtag">Direction 4 &middot; Diagnose-and-mitigate framework</span>
+      <h3>One loop instead of two separate projects</h3>
+      <p class="sop-text">A longer-term direction unifies characterization and control into a
+      single framework &mdash; first diagnosing a defect ensemble's parameters, then using that
+      diagnosis to inform targeted suppression &mdash; rather than treating characterization and
+      mitigation as separate research threads.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 class="block-title serif">Spoken identity pitch</h2>
+    <p class="block-note">For interviews, cold emails, or saying out loud before you write it down.</p>
+
+    <div class="pitch-box">
+      <span class="ptag">One-liner</span>
+      <p>I'm an ML engineer who did the work to actually understand the physics &mdash; I'm not
+      throwing a black-box tool at their data, I'm building the computational layer these labs
+      already rely on, backed by real understanding of the physical mechanism.</p>
+
+      <span class="ptag">Quick intro (10&ndash;15 sec)</span>
+      <p>I build physically-grounded ML for quantum hardware &mdash; specifically, using ML to
+      find pulse sequences that suppress decoherence caused by two-level-system defects in
+      superconducting qubits.</p>
+
+      <span class="ptag">Fuller version (~40 sec)</span>
+      <p>My background is machine learning, not physics. But the labs I'm targeting already do
+      serious computational work themselves &mdash; Hamiltonian learning, adaptive parameter
+      tracking, algorithmic error suppression. What they need isn't another physicist, it's
+      someone who can own that computational layer <i>and</i> understand the physics well enough
+      for it to be trustworthy, not a black box. So this year I did the work to close that gap
+      &mdash; driven two-level-system dynamics, Lindblad master equations, dressed states &mdash;
+      and I'm using it to build an ML pipeline that finds pulse sequences that destructively
+      interfere with TLS defect dynamics, directly extending Fitzpatrick's BCTDS paper. I'm not
+      trying to out-physics the physicists in the room. I'm bringing the computational half of
+      this exact niche, with the physical grounding to make it count.</p>
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    Source: this conversation, 2026-07-30. &middot;
+    <a class="crosslink-back" href="research-direction.html">&larr; Back to research direction</a>
+  </footer>
+
+</div>
+</body>
+</html>

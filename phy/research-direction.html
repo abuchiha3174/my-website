@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Research Direction — Shared Simulator → Branch A</title>
+<title>Research Direction — ML Pulse Suppression of TLS Defects</title>
 <link rel="stylesheet" href="css/style.css">
 <style>
   /* ---------- page-specific additions (not in shared style.css) ---------- */
@@ -14,34 +14,39 @@
 
   .finding {
     background: var(--good-soft); border: 1px solid var(--rule); border-radius: 10px;
-    padding: 16px 18px; margin-bottom: 34px; box-shadow: var(--shadow);
+    padding: 16px 18px; margin-bottom: 24px; box-shadow: var(--shadow);
   }
   .finding .tag { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--good); font-weight: 700; }
   .finding p { margin: 8px 0 0; font-size: 14.5px; }
   .finding code { font-family: ui-monospace, monospace; background: var(--paper-raised); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
 
+  .vision-cta {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+    background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 14px 18px; margin-bottom: 34px; box-shadow: var(--shadow);
+  }
+  .vision-cta p { margin: 0; font-size: 14px; color: var(--ink-soft); max-width: 48ch; }
+  .vision-cta a.btn {
+    display: inline-flex; align-items: center; gap: 8px; flex: none;
+    font-family: ui-monospace, monospace; font-size: 13px; font-weight: 600;
+    color: var(--paper); background: var(--accent); text-decoration: none;
+    padding: 10px 16px 10px 14px; border-radius: 999px; box-shadow: var(--shadow);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .vision-cta a.btn:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(20,30,35,0.18), 0 12px 24px rgba(20,30,35,0.14); }
+  .vision-cta a.btn .arrow { display: inline-block; transition: transform 0.15s ease; }
+  .vision-cta a.btn:hover .arrow { transform: translateX(3px); }
+
   section.block { margin-bottom: 40px; }
   h2.block-title { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; font-size: 23px; margin: 0 0 6px; font-weight: 600; }
   .block-note { color: var(--ink-soft); font-size: 14px; margin: 0 0 20px; max-width: 68ch; }
 
-  /* ---------- flowchart ---------- */
-  .flow { display: flex; flex-direction: column; align-items: stretch; }
-  .flow-node-wrap { display: flex; flex-direction: column; align-items: center; }
+  /* ---------- flowchart (single line, no fork — one path now) ---------- */
+  .flow { display: flex; flex-direction: column; align-items: center; }
   .flow-arrow-v { width: 2px; height: 26px; background: var(--rule); position: relative; }
   .flow-arrow-v::after {
     content: ""; position: absolute; left: 50%; bottom: -1px; transform: translateX(-50%);
     border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--accent);
-  }
-  .fork-bar { display: flex; align-items: center; width: 100%; max-width: 560px; margin: 0 auto; }
-  .fork-bar .stem { flex: none; width: 2px; height: 26px; background: var(--rule); margin: 0 auto; }
-  .fork-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; width: 100%; position: relative; }
-  .fork-row::before {
-    content: ""; position: absolute; top: -26px; left: 25%; right: 25%; height: 2px; background: var(--rule);
-  }
-  .fork-row .flow-arrow-v { margin: 0 auto 0; height: 26px; }
-  @media (max-width: 640px) {
-    .fork-row { grid-template-columns: 1fr; }
-    .fork-row::before { display: none; }
   }
 
   details.phase-card {
@@ -68,9 +73,9 @@
     display: inline-block; font-family: ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.03em;
     padding: 2px 8px; border-radius: 999px; margin-left: 8px; vertical-align: middle;
   }
-  .status-chip.reuse { background: var(--good-soft); color: var(--good); }
+  .status-chip.done { background: var(--good-soft); color: var(--good); }
   .status-chip.new { background: var(--measured-soft); color: var(--measured); }
-  .status-chip.unverified { background: var(--measured-soft); color: var(--measured); }
+  .status-chip.dropped { background: var(--rule); color: var(--ink-soft); }
 
   .phase-body { padding: 2px 18px 18px 50px; font-size: 14.5px; }
   .phase-body h4 { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); margin: 14px 0 6px; font-family: ui-monospace, monospace; }
@@ -97,13 +102,13 @@
   table.cmp tr.ours td { background: var(--accent-soft); }
   .caveat { margin-top: 10px; font-size: 12.5px; color: var(--ink-soft); border-left: 2px solid var(--rule); padding-left: 10px; }
 
-  /* ---------- decision callout ---------- */
-  .decision { background: var(--measured-soft); border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; }
-  .decision .badge { display: inline-block; font-family: ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--measured); background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 999px; padding: 3px 9px; margin-bottom: 10px; }
-  .decision ul { margin: 8px 0 0; padding-left: 18px; font-size: 14px; }
-  .decision li { margin-bottom: 6px; }
-  .confidence { margin-top: 10px; font-size: 12.5px; color: var(--ink-soft); }
-  .confidence b { color: var(--ink); }
+  /* ---------- collaboration split ---------- */
+  .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .split-grid { grid-template-columns: 1fr; } }
+  .split-card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); }
+  .split-card .who { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block; }
+  .split-card ul { margin: 0; padding-left: 18px; font-size: 13.5px; }
+  .split-card li { margin-bottom: 4px; }
 
   footer.page-footer { border-top: 1px solid var(--rule); padding-top: 18px; font-size: 12.5px; color: var(--ink-soft); }
 </style>
@@ -117,35 +122,40 @@
       <span class="eyebrow">Physics gap · study notebook</span>
       <a class="crosslink-back" href="index.html">&larr; Back to notebook</a>
     </div>
-    <h1 class="title serif">Research Direction — Shared Simulator &rarr; Branch A</h1>
-    <p class="subtitle">The fall research plan turned into an actual build sequence. Two tracks run
-    side by side: the physics-concept phases in the notebook you came from, and the build phases
-    below — neither blocks the other. Click any phase to open it.</p>
+    <h1 class="title serif">Research Direction — ML Pulse Suppression of TLS Defects</h1>
+    <p class="subtitle">The only path now. Using ML to find pulse sequences that destructively
+    interfere with TLS defect dynamics and suppress the decoherence they cause — built jointly
+    with Sheeraja on real experimental BCTDS data, directly extending the paper's own coherent-control
+    result. Click any phase to open it.</p>
     <div class="source-links">
-      <span class="source-chip">BCTDS_FALL_RESEARCH_PLAN.md</span>
-      <span class="source-chip">bctds-sim/PLAN.md</span>
-      <span class="source-chip">TLS-ML-Paper (collaborator)</span>
+      <span class="source-chip">TLS-ML-Paper (w/ Sheeraja)</span>
+      <span class="source-chip">FIRST PASS GITHUB.pdf</span>
+      <span class="source-chip">BCTDS manuscript codebase</span>
     </div>
   </header>
 
   <div class="finding">
-    <span class="tag">Status — under revision</span>
-    <p><code>hamiltonian_generator_dataset.py</code> was written on a whim and isn't trusted or
-    understood yet, so Phase 1 below should <em>not</em> be read as "already solved" — that
-    framing was premature. Separately, a collaborator (Sheeraja) has scripts in
-    <code>TLS-ML-Paper/</code> doing unsupervised clustering, anomaly detection, and predictability
-    testing directly on real experimental IQ data — a genuinely different methodology from the
-    supervised sim-to-real regression Branch A describes below, not a drop-in replacement for
-    Phase 1. Which direction this project actually takes is still an open discussion — treat the
-    phases below as the fall plan's original framing, not a settled decision.</p>
+    <span class="tag">Status — 2026-07-30</span>
+    <p>Branch A (Hamiltonian-parameter regression on simulated data) is <b>scrapped</b>. Reasons:
+    its foundation (<code>hamiltonian_generator_dataset.py</code>) was never trusted or understood;
+    it's a simulated-data approach, which is exactly what this project's own differentiation is
+    supposed to argue against; and it didn't serve the collaboration that's actually happening. A
+    web search confirmed Siddiqi's AQT lab and Oliver's MIT group both have current published work
+    specifically on pulse-level suppression of TLS/defect-induced decoherence — so this direction is
+    a well-matched fit for those labs too, not a narrower bet than Branch A was.</p>
+  </div>
+
+  <div class="vision-cta">
+    <p>Where this project could grow into an actual multi-year PhD research program — draft
+    language for SOP use.</p>
+    <a class="btn" href="phd-vision.html">PhD vision <span class="arrow">&rarr;</span></a>
   </div>
 
   <section class="block">
     <h2 class="block-title serif">Build flowchart</h2>
-    <p class="block-note">Phase 0 &rarr; Phase 1 feed both branches. Phase 2 (Branch A) and Phase 3
-    (Branch B) then run in parallel, weeks 5&ndash;12, converging on one Dec&nbsp;1 outcome.
-    <span class="status-chip unverified">unverified</span> = existing code exists but isn't
-    trusted/understood yet. <span class="status-chip new">new</span> = new work this fall.</p>
+    <p class="block-note">One path, five stages. <span class="status-chip done">done</span> =
+    already exists (Sheeraja's exploratory scripts). <span class="status-chip new">new</span> =
+    new work this fall.</p>
 
     <div class="flow">
 
@@ -153,32 +163,24 @@
         <summary class="phase-summary">
           <span class="chev">&#9654;</span>
           <span>
-            <span class="ptag">PHASE 0</span>
-            <span class="ptitle">Orientation<span class="status-chip unverified">unverified reuse</span></span>
+            <span class="ptag">STAGE 1</span>
+            <span class="ptitle">Real-data reconnaissance<span class="status-chip done">done</span></span>
           </span>
-          <span class="pweeks">now</span>
+          <span class="pweeks">complete</span>
         </summary>
         <div class="phase-body">
           <h4>What it is</h4>
-          <p>Confirm the environment, scaffold a project folder, and read what already exists
-          before writing new simulation code — both the AAAI paper's model definition and
-          <code>hamiltonian_generator_dataset.py</code>, on its own terms rather than assuming it's
-          validated infrastructure.</p>
-          <h4>Why first</h4>
-          <p>Writing a simulator from scratch without first understanding what's already sitting in
-          the manuscript codebase would risk duplicated effort — but equally, treating unread,
-          unverified code as a finished foundation would be worse. Understand it before deciding
-          whether to build on it, extend it, or replace it.</p>
-          <h4>Steps</h4>
-          <ul>
-            <li>Confirm environment &mdash; done: Python 3.14.3, QuTiP 5.3.0, numpy, scipy, matplotlib.</li>
-            <li>Scaffold <code>bctds-sim/</code> as the project home for Branch A&#39;s model code.</li>
-            <li>Actually read and test <code>hamiltonian_generator_dataset.py</code> line by line
-            before trusting any of its output.</li>
-          </ul>
-          <h4>Status</h4>
-          <p>Environment confirmed. <code>hamiltonian_generator_dataset.py</code> exists but is
-          explicitly not trusted yet &mdash; understanding it is the actual next step, not reusing it.</p>
+          <p>Sheeraja's <code>First_Pass.py</code> / <code>Second_Pass.py</code> / <code>Third_Pass.py</code>
+          — PCA/clustering on phase-FFT slices, IsolationForest anomaly detection across 42
+          pulse-width conditions, and an MLP testing whether near-future signal is predictable at
+          all (checked against a shuffled-target control and a mean baseline).</p>
+          <h4>Why it matters</h4>
+          <p>Confirms the real experimental data has genuine, non-random structure worth building
+          on — not proof of suppression yet, but the reconnaissance that justifies investing in the
+          next four stages instead of guessing blind.</p>
+          <h4>Caveat</h4>
+          <p>Small-N (~42 conditions) makes the R&sup2; numbers fragile — treat as "there is
+          structure here," not as a finished result to quote directly.</p>
         </div>
       </details>
 
@@ -188,186 +190,169 @@
         <summary class="phase-summary">
           <span class="chev">&#9654;</span>
           <span>
-            <span class="ptag">PHASE 1</span>
-            <span class="ptitle">Shared simulator<span class="status-chip unverified">open question</span></span>
+            <span class="ptag">STAGE 2</span>
+            <span class="ptitle">Standardize the dataset<span class="status-chip new">new work</span></span>
           </span>
-          <span class="pweeks">weeks 1&ndash;4</span>
+          <span class="pweeks">next</span>
         </summary>
         <div class="phase-body">
           <h4>What it is</h4>
-          <p>A validated driven-TLS Hamiltonian (tunneling model + time-dependent drive term) that
-          reproduces the paper&#39;s sidebands and dressed-state behavior, plus a labeled library of
-          simulated ring-down traces with known ground-truth parameters. Both branches were meant to
-          consume this exact same library.</p>
-          <h4>Open question</h4>
-          <p><code>hamiltonian_generator_dataset.py</code> and <code>generate_dataset.py</code>
-          in Fitzpatrick lab&#39;s manuscript codebase implement something that looks like this
-          model on paper &mdash; but since the generator script was written on a whim and isn&#39;t
-          understood yet, that can&#39;t be assumed to be a validated foundation. A second, separate
-          question: does the collaborator&#39;s <code>TLS-ML-Paper/</code> direction (real
-          experimental data, unsupervised) replace the need for a simulated ground-truth library
-          at all, for at least part of this project?</p>
-          <h4>Steps (don&#39;t assume, verify)</h4>
-          <ul>
-            <li>Understand <code>hamiltonian_generator_dataset.py</code> well enough to say whether
-            it&#39;s trustworthy &mdash; or decide it needs rebuilding.</li>
-            <li>Decide, with input from the collaborator conversation, whether Phase 1&ndash;2
-            still center on simulated ground truth, or partly shift toward the real-data approach.</li>
-          </ul>
+          <p>Reconstruct the raw-measurement &rarr; IQ-matrix &rarr; FFT-feature &rarr; figure
+          pipeline from Fitzpatrick's manuscript codebase, then standardize it into a clean, reusable
+          dataset: <code>raw_iq_timeseries/</code>, <code>processed_iq_matrices/</code>,
+          <code>fft_phase_spectra/</code>, <code>fft_amplitude_spectra/</code>,
+          <code>simulation_data/</code>, <code>metadata/</code> (temperature, pulse duration/
+          amplitude/phase, spacing, drive frequency, material, timestamp).</p>
+          <h4>Why it matters</h4>
+          <p>Turns a figure-generation repo into an actual ML-ready dataset &mdash; this is the
+          "more data to train/compare against" step. Every later stage depends on this being done
+          properly, once, rather than re-derived ad hoc each time.</p>
         </div>
       </details>
 
-      <div class="fork-bar">
-        <div class="stem"></div>
-      </div>
-      <div class="fork-row">
+      <div class="flow-arrow-v"></div>
 
-        <div class="flow-node-wrap">
-          <div class="flow-arrow-v"></div>
-          <details class="phase-card">
-            <summary class="phase-summary">
-              <span class="chev">&#9654;</span>
-              <span>
-                <span class="ptag">PHASE 2 &middot; primary</span>
-                <span class="ptitle">Branch A<span class="status-chip new">new work</span></span>
-              </span>
-              <span class="pweeks">wks 5&ndash;9</span>
-            </summary>
-            <div class="phase-body">
-              <h4>What it is</h4>
-              <p>An inference model mapping a raw ring-down trace (or its phase-FFT spectrum)
-              directly to the driven-TLS parameters &mdash; automating the manual, one-at-a-time
-              curve-fitting currently used.</p>
-              <h4>Why this is the primary deliverable</h4>
-              <p>Self-contained, clear success metric (predicted parameter vs. known one), and
-              parallels published work at Siddiqi&#39;s AQT lab and Oliver&#39;s group (see
-              comparison table below).</p>
-              <h4>Steps</h4>
-              <ul>
-                <li>Train a regression/inference model on the Phase 1 trace library.</li>
-                <li>Validate against known simulated ground truth.</li>
-                <li>Test the trained model on real experimental BCTDS data (sim-to-real transfer).</li>
-                <li>Benchmark speed and accuracy against manual fitting.</li>
-              </ul>
-              <h4>Realistic Dec&nbsp;1 outcome</h4>
-              <p>A working model with a measured accuracy benchmark against manual fitting.</p>
-            </div>
-          </details>
+      <details class="phase-card">
+        <summary class="phase-summary">
+          <span class="chev">&#9654;</span>
+          <span>
+            <span class="ptag">STAGE 3</span>
+            <span class="ptitle">Forecasting surrogate model<span class="status-chip new">new work</span></span>
+          </span>
+          <span class="pweeks">new work</span>
+        </summary>
+        <div class="phase-body">
+          <h4>What it is</h4>
+          <p>A model that predicts future ring-down / spectral response given pulse parameters
+          (amplitude, phase, duration, inter-pulse spacing) &mdash; "TLS Ensemble Dynamics
+          Forecasting." Fast enough to evaluate thousands of candidate pulses cheaply, unlike
+          running a full physics simulation per candidate.</p>
+          <h4>Why it matters</h4>
+          <p>This directly fixes the original plan's stated weakness of a pulse-suppression search
+          (too expensive to run a full simulation per candidate pulse) &mdash; train the surrogate
+          once, then search against it cheaply.</p>
         </div>
+      </details>
 
-        <div class="flow-node-wrap">
-          <div class="flow-arrow-v"></div>
-          <details class="phase-card">
-            <summary class="phase-summary">
-              <span class="chev">&#9654;</span>
-              <span>
-                <span class="ptag">PHASE 3 &middot; stretch</span>
-                <span class="ptitle">Branch B<span class="status-chip new">new work</span></span>
-              </span>
-              <span class="pweeks">wks 5&ndash;12</span>
-            </summary>
-            <div class="phase-body">
-              <h4>What it is</h4>
-              <p>Designing a pulse sequence &mdash; via evolutionary/neuroevolution search &mdash;
-              that creates destructive interference in TLS ring-down dynamics near the qubit
-              operating frequency, suppressing TLS-induced decoherence.</p>
-              <h4>Why it&#39;s the side project</h4>
-              <p>Higher compute cost, fuzzier success criterion than Branch A, and full validation
-              eventually needs Fitzpatrick&#39;s real hardware.</p>
-              <h4>Steps</h4>
-              <ul>
-                <li>Define the suppression objective as a fitness function against the Phase 1
-                simulator.</li>
-                <li>Run an evolutionary, gradient-free search over the pulse-shape space.</li>
-                <li>Validate the best-found pulse vs. a no-suppression baseline, in simulation.</li>
-              </ul>
-            </div>
-          </details>
+      <div class="flow-arrow-v"></div>
+
+      <details class="phase-card">
+        <summary class="phase-summary">
+          <span class="chev">&#9654;</span>
+          <span>
+            <span class="ptag">STAGE 4</span>
+            <span class="ptitle">Pulse suppression search<span class="status-chip new">new work</span></span>
+          </span>
+          <span class="pweeks">new work</span>
+        </summary>
+        <div class="phase-body">
+          <h4>What it is</h4>
+          <p>Evolutionary / gradient-free search over the pulse-shape space (amplitude, phase,
+          duration, spacing), using the Stage 3 surrogate as the fitness function, looking for
+          pulses that create destructive interference in the TLS ring-down response &mdash;
+          suppressing the decoherence the defects cause.</p>
+          <h4>Why it matters</h4>
+          <p>This is the actual deliverable: directly extends the BCTDS paper's own demonstrated
+          amplitude/phase/spacing coherent-control result, automating and optimizing what the paper
+          did by manual sweep.</p>
         </div>
+      </details>
 
-      </div>
+      <div class="flow-arrow-v"></div>
 
-      <div class="fork-bar"><div class="stem"></div></div>
+      <details class="phase-card">
+        <summary class="phase-summary">
+          <span class="chev">&#9654;</span>
+          <span>
+            <span class="ptag">STAGE 5</span>
+            <span class="ptitle">Validation<span class="status-chip new">new work</span></span>
+          </span>
+          <span class="pweeks">new work</span>
+        </summary>
+        <div class="phase-body">
+          <h4>What it is</h4>
+          <p>Compare the best-found suppression pulse against a no-suppression baseline &mdash;
+          on real data / the surrogate first; hardware validation on Fitzpatrick's actual BCTDS
+          setup is a stretch goal beyond fall scope.</p>
+        </div>
+      </details>
+
+      <div class="flow-arrow-v"></div>
 
       <div class="outcome-box">
         <span class="tag">By Dec 1</span>
-        <p>Validated simulator &middot; complete Branch A result with accuracy benchmark &middot;
-        preliminary Branch B search results &mdash; still pending the Phase 0/1 questions above
-        being resolved.</p>
+        <p>Standardized dataset &middot; working forecasting surrogate &middot; a measured
+        suppression benchmark (suppressed vs. baseline ring-down amplitude) &mdash; a complete,
+        describable result even without a publication.</p>
       </div>
 
     </div>
   </section>
 
   <section class="block">
-    <h2 class="block-title serif">Where Branch A sits next to other approaches</h2>
-    <p class="block-note">Summarized from the fall plan&#39;s own framing plus general knowledge
-    &mdash; not independently checked against the source papers yet.</p>
+    <h2 class="block-title serif">Collaboration split</h2>
+    <p class="block-note">By deliverable, not "50/50 across everything" &mdash; so each stage has
+    one clearly attributable owner when it's time to describe individual contribution.</p>
+    <div class="split-grid">
+      <div class="split-card">
+        <span class="who">Person A</span>
+        <ul>
+          <li>Fill in once agreed</li>
+        </ul>
+      </div>
+      <div class="split-card">
+        <span class="who">Person B</span>
+        <ul>
+          <li>Fill in once agreed</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 class="block-title serif">Where this sits next to current published work</h2>
+    <p class="block-note">Grounded in an actual web search (2026-07-30) rather than assumption.</p>
     <div class="table-scroll">
       <table class="cmp">
         <thead>
-          <tr><th>Approach</th><th>Input signal</th><th>What&#39;s inferred</th><th>How</th><th>Adaptive?</th></tr>
+          <tr><th>Approach</th><th>Input</th><th>What it does</th><th>Status</th></tr>
         </thead>
         <tbody>
           <tr class="ours">
-            <td class="who">Branch A (this project)</td>
-            <td>Ring-down trace / phase-FFT spectrum</td>
-            <td>Driven-TLS params <span class="mono">&omega;, J, &epsilon;, &Delta;</span></td>
-            <td>Supervised regression on simulated trace library, one-shot</td>
-            <td>No &mdash; single fixed trace in</td>
+            <td class="who">This project</td>
+            <td>Real BCTDS IQ data, pulse-shape parameters</td>
+            <td>Learned forecasting surrogate + evolutionary search for suppressive pulses</td>
+            <td>In progress, fall 2026</td>
           </tr>
           <tr>
-            <td class="who">TLS-ML-Paper<br><span style="font-weight:400;color:var(--ink-soft)">(collaborator, Sheeraja)</span></td>
-            <td>Real experimental IQ matrices, 42 pulse-width conditions</td>
-            <td>Behavioral clusters, anomalies, near-term predictability &mdash; no physical params</td>
-            <td>Unsupervised clustering + anomaly detection + NN forecasting vs. shuffled control</td>
-            <td>No ground truth exists to adapt against</td>
+            <td class="who">Spectrally-balanced pulses<br><span style="font-weight:400;color:var(--ink-soft)">(Siddiqi / AQT lab, Feb 2025)</span></td>
+            <td>Superconducting qubit + TLS defect</td>
+            <td>Pulse-level dynamical decoupling &mdash; order-of-magnitude reduction in spurious excitations, fewer gate errors from a strongly coupled TLS</td>
+            <td>Published</td>
           </tr>
           <tr>
-            <td class="who">Hamiltonian learning via Rabi experiments<br><span style="font-weight:400;color:var(--ink-soft)">(Siddiqi / AQT lab)</span></td>
-            <td>Rabi oscillation traces (population vs. drive time)</td>
-            <td>Qubit / system Hamiltonian terms</td>
-            <td>Fit or ML over the oscillation pattern</td>
-            <td>Can be online / adaptive</td>
+            <td class="who">Defect-mode loss mitigation<br><span style="font-weight:400;color:var(--ink-soft)">(Oliver group, MIT EQuS)</span></td>
+            <td>Superconducting qubits strongly coupled to defect modes</td>
+            <td>Mitigating losses from defect modes; gate-scheduling-based idling error suppression</td>
+            <td>Published (2024, 2026)</td>
           </tr>
           <tr>
-            <td class="who">Binary-search Hamiltonian tracking<br><span style="font-weight:400;color:var(--ink-soft)">(Oliver group)</span></td>
-            <td>Sequential chosen measurements</td>
-            <td>Drifting parameter&#39;s current value</td>
-            <td>Each next measurement narrows the estimate, bisection-style</td>
-            <td>Yes &mdash; explicitly sequential</td>
+            <td class="who">Branch A (dropped)<br><span style="font-weight:400;color:var(--ink-soft)">(Hamiltonian-parameter regression)</span></td>
+            <td>Simulated ring-down traces</td>
+            <td>Regression to (&omega;, J, &epsilon;, &Delta;), sim-to-real transfer test</td>
+            <td>Scrapped 2026-07-30</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="caveat">Before citing any comparison work by name to Krutz or in an SOP, confirm the
-    actual citation &mdash; this table hasn&#39;t been checked against the source papers.</p>
-  </section>
-
-  <section class="block">
-    <h2 class="block-title serif">Open decision &mdash; publish or not</h2>
-    <div class="decision">
-      <span class="badge">deferred, not decided</span>
-      <p style="margin:0 0 6px;">Revisit at the <b>simulator-validated checkpoint</b> &mdash; the same
-      point the fall plan already names for looping in Fitzpatrick&#39;s side. That checkpoint now
-      also depends on resolving the Phase 0/1 open questions above.</p>
-      <ul>
-        <li>The fall plan&#39;s actual Dec 1 bar is a <i>complete, describable result</i>, not a
-        publication.</li>
-        <li>Both comparison groups already have public work here &mdash; a publishable Branch A needs
-        a real differentiator, worth identifying once a result exists to compare.</li>
-        <li>Deciding now either way costs something (overhead if yes, foreclosed upside if no) for no
-        present benefit. Deferring costs nothing.</li>
-      </ul>
-      <p class="confidence"><b>Confidence: medium</b> &mdash; a sequencing judgment call, not a
-      strictly evidence-backed conclusion.</p>
-    </div>
+    <p class="caveat">Confirm exact citations before quoting these to Krutz or in an SOP &mdash;
+    found via search, not independently read in full.</p>
   </section>
 
   <footer class="page-footer">
-    Source: <span class="mono">bctds-sim/PLAN.md</span> and
-    <span class="mono">BCTDS_FALL_RESEARCH_PLAN.md</span>. &middot;
-    <a class="crosslink-back" href="index.html">&larr; Back to notebook</a>
+    Source: this conversation, 2026-07-30. &middot;
+    <a class="crosslink-back" href="index.html">&larr; Back to notebook</a> &middot;
+    <a class="crosslink-back" href="phd-vision.html">PhD vision &rarr;</a>
   </footer>
 
 </div>
