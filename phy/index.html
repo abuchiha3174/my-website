@@ -23,13 +23,13 @@
   </header>
 
   <nav class="phase-tracker">
-    <div class="phase-pill active"><span class="num">PHASE 0</span>Qubits &amp; why</div>
-    <div class="phase-pill active"><span class="num">PHASE 1</span>One spin</div>
-    <div class="phase-pill upcoming"><span class="num">PHASE 2</span>Dissipation</div>
-    <div class="phase-pill upcoming"><span class="num">PHASE 3</span>Two pulses</div>
-    <div class="phase-pill upcoming"><span class="num">PHASE 4</span>Many TLS</div>
-    <div class="phase-pill upcoming"><span class="num">PHASE 5</span>Measurement</div>
-    <div class="phase-pill upcoming"><span class="num">PHASE 6</span>Broaden</div>
+    <a class="phase-pill active" href="#sec-qubit-what"><span class="num">PHASE 0</span>Qubits &amp; why</a>
+    <a class="phase-pill active" href="#sec-hilbert"><span class="num">PHASE 1</span>One spin</a>
+    <a class="phase-pill active" href="#sec-gates"><span class="num">PHASE 2</span>Dissipation</a>
+    <div class="phase-pill upcoming" title="Not written yet"><span class="num">PHASE 3</span>Two pulses</div>
+    <div class="phase-pill upcoming" title="Not written yet"><span class="num">PHASE 4</span>Many TLS</div>
+    <div class="phase-pill upcoming" title="Not written yet"><span class="num">PHASE 5</span>Measurement</div>
+    <div class="phase-pill upcoming" title="Not written yet"><span class="num">PHASE 6</span>Broaden</div>
   </nav>
 
   <section class="entry" id="sec-notation">
@@ -153,6 +153,9 @@
             <tr id="note-dephasing-concept"><td class="sym" style="font-size:14px;">Dephasing</td><td class="say">losing the "which phase," not the energy</td><td>Loss of the definite relative phase between α and β without necessarily changing populations. Full math and the γ_φ symbol are Phase 2 — mentioned here because it's already named in Section 0.5.</td><td class="where"><a href="#sec-qubit-tls-link">0.5</a>, <a href="#sec-phase2-preview">Phase 2</a></td></tr>
             <tr id="note-coherence-time"><td class="sym" style="font-size:14px;">Coherence time (T1, T2)</td><td class="say">the two numbers the whole field optimizes</td><td>T1 = how long a state's energy survives before relaxing. T2 = how long the relative phase survives (always ≤ 2×T1). TLS defects are what's currently capping both.</td><td class="where"><a href="#sec-qubit-tls-link">0.5</a></td></tr>
             <tr id="note-quasistatic"><td class="sym" style="font-size:14px;">Quasi-static</td><td class="say">"slow enough to call constant"</td><td>Describes a term that changes so slowly compared to the fastest timescale in the problem that you can treat it as effectively frozen — used to describe the surviving term in the RWA derivation.</td><td class="where"><a href="#sec-rwa">1.5</a></td></tr>
+            <tr id="note-memory"><td class="sym" style="font-size:14px;">Memory effect / non-Markovian</td><td class="say">"it hasn't forgotten yet"</td><td>A process is <i>Markovian</i> (memoryless) if its future depends only on its current state, decaying cleanly. It's <i>non-Markovian</i> — has a "memory effect" — if its current behavior still depends on its past history, like an echo that hasn't fully faded. This is the paper's key finding about TLS relaxation.</td><td class="where"><a href="#sec-memory">2.2</a></td></tr>
+            <tr id="note-gate-seq"><td class="sym" style="font-size:14px;">Gate sequence</td><td class="say">the instructions, run in order</td><td>An ordered series of gates applied to run an algorithm or an error-correction round, with short "interpulse delays" between each one.</td><td class="where"><a href="#sec-gates">2.1</a></td></tr>
+            <tr id="note-correlated-error"><td class="sym" style="font-size:14px;">Correlated vs. independent errors</td><td class="say">shared cause vs. separate accidents</td><td>Error correction is designed assuming errors on different gates are independent accidents. A shared, lingering disturbance (like TLS memory) breaks that assumption by causing the <i>same</i> error source to affect multiple gates in a row.</td><td class="where"><a href="#sec-errorcorr">2.3</a></td></tr>
           </tbody>
         </table>
       </div>
@@ -610,11 +613,189 @@
       <textarea class="notes-field" id="notes-1" placeholder="Write your own version here — even messy. This is what you'll read back before talking to Fitzpatrick."></textarea>
     </section>
 
+    <!-- ============ PHASE 2: Gate sequences, memory effects & Hamiltonian learning ============ -->
+    <section class="entry" id="sec-gates">
+      <div class="entry-head"><span class="entry-tag">2.1</span></div>
+      <h2 class="entry-title">What a gate sequence actually is</h2>
+      <div class="entry-grid">
+        <div>
+          <div class="diagram-panel">
+            <svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
+              <text x="132" y="16" text-anchor="middle" font-size="10" fill="var(--ink-soft)" font-family="ui-monospace,monospace">error-correction round</text>
+              <rect x="15" y="40" width="42" height="34" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.3"/>
+              <text x="36" y="61" text-anchor="middle" font-size="11" fill="var(--accent)" font-family="ui-monospace,monospace">G1</text>
+              <rect x="79" y="40" width="42" height="34" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.3"/>
+              <text x="100" y="61" text-anchor="middle" font-size="11" fill="var(--accent)" font-family="ui-monospace,monospace">G2</text>
+              <rect x="143" y="40" width="42" height="34" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.3"/>
+              <text x="164" y="61" text-anchor="middle" font-size="11" fill="var(--accent)" font-family="ui-monospace,monospace">G3</text>
+              <rect x="207" y="40" width="42" height="34" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.3"/>
+              <text x="228" y="61" text-anchor="middle" font-size="11" fill="var(--accent)" font-family="ui-monospace,monospace">G4</text>
+              <text x="68" y="34" text-anchor="middle" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">delay</text>
+              <text x="132" y="34" text-anchor="middle" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">delay</text>
+              <text x="196" y="34" text-anchor="middle" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">delay</text>
+              <path d="M15,95 L15,105 L249,105 L249,95" fill="none" stroke="var(--measured)" stroke-width="1.3"/>
+              <text x="132" y="122" text-anchor="middle" font-size="9.5" fill="var(--measured)" font-family="ui-monospace,monospace">one gate sequence</text>
+            </svg>
+          </div>
+          <p class="diagram-caption">Each box is one controlled operation on the qubit; the short "delay" gaps between them matter more than you'd guess — see 2.2.</p>
+        </div>
+        <div class="text-panel">
+          <p>A <a href="#note-gate-seq" class="sym-link"><b>gate sequence</b></a> is just an ordered list of gates — the operations from Phase 0/1 (a flip, a rotation, a measurement) — run one after another to carry out an algorithm or, here, one round of an error-correction protocol. Each gate takes real, finite time (tens of nanoseconds on real hardware), and there's a short "interpulse delay" between consecutive gates.</p>
+          <p>Why this matters for TLS: normally you'd assume that whatever happened during gate 1 is fully over and forgotten by the time gate 2 starts. Section 2.2 is about exactly the case where that assumption breaks.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="entry" id="sec-memory">
+      <div class="entry-head"><span class="entry-tag">2.2</span></div>
+      <h2 class="entry-title">TLS relaxation with a memory</h2>
+      <div class="entry-grid">
+        <div>
+          <div class="diagram-panel">
+            <svg viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg">
+              <line x1="35" y1="15" x2="35" y2="140" stroke="var(--ink-soft)" stroke-width="1.2"/>
+              <line x1="35" y1="140" x2="245" y2="140" stroke="var(--ink-soft)" stroke-width="1.2"/>
+              <text x="12" y="20" font-size="9" fill="var(--ink-soft)" font-family="ui-monospace,monospace">excited</text>
+              <text x="20" y="144" font-size="9" fill="var(--ink-soft)" font-family="ui-monospace,monospace">0</text>
+              <text x="240" y="155" text-anchor="end" font-size="9" fill="var(--ink-soft)" font-family="ui-monospace,monospace">time</text>
+              <path d="M35,20 C70,55 90,90 245,138" fill="none" stroke="var(--accent)" stroke-width="2"/>
+              <text x="185" y="75" text-anchor="middle" font-size="8.5" fill="var(--accent)" font-family="ui-monospace,monospace">clean exponential</text>
+              <text x="185" y="86" text-anchor="middle" font-size="8.5" fill="var(--accent)" font-family="ui-monospace,monospace">(memoryless)</text>
+              <path d="M35,20 C60,45 75,60 95,68 C120,78 110,95 130,92 C155,88 160,105 245,135" fill="none" stroke="var(--measured)" stroke-width="2"/>
+              <text x="95" y="115" text-anchor="middle" font-size="8.5" fill="var(--measured)" font-family="ui-monospace,monospace">structure = "memory"</text>
+              <text x="95" y="126" text-anchor="middle" font-size="8.5" fill="var(--measured)" font-family="ui-monospace,monospace">(non-Markovian)</text>
+            </svg>
+          </div>
+          <p class="diagram-caption">A memoryless decay just monotonically fades. A curve with structure in it — a shoulder, a stall, a partial revival — is the fingerprint of a lingering "memory" effect.</p>
+        </div>
+        <div class="text-panel">
+          <p>The paper's central finding: a disturbed TLS defect's relaxation shows <a href="#note-memory" class="sym-link"><b>memory effects</b></a> on timescales <i>comparable to an entire gate sequence</i>. In plain terms — the TLS hasn't actually settled back down by the time the next gate in the sequence runs. Its lingering disturbance from gate 1 can still be present, in some form, during gates 2, 3, and 4.</p>
+          <p>This is a fundamentally different picture from the T1/T2 decay you'll formalize properly later in Phase 2 — those describe clean, memoryless (<a href="#note-memory" class="sym-link">Markovian</a>) exponential decay. A memory effect means the decay itself has structure that depends on the system's history, not just its current state.</p>
+          <div class="callout callout-paper">
+            <span class="label">in your paper</span>
+            This is the mechanism behind the "dressed states" and sideband features you've seen in the driven-TLS discussion — the time-dependent drive term added to the tunneling model is precisely what produces this structured, non-Markovian relaxation.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="entry" id="sec-errorcorr">
+      <div class="entry-head"><span class="entry-tag">2.3</span></div>
+      <h2 class="entry-title">Why this threatens error correction specifically</h2>
+      <div class="entry-grid">
+        <div>
+          <div class="diagram-panel">
+            <svg viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg">
+              <text x="130" y="16" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">same 4-gate sequence</text>
+              <text x="15" y="45" font-size="9" fill="var(--ink-soft)" font-family="ui-monospace,monospace">EC assumes:</text>
+              <circle cx="90" cy="50" r="9" fill="var(--good)"/>
+              <circle cx="140" cy="50" r="9" fill="var(--rule)"/>
+              <circle cx="190" cy="50" r="9" fill="var(--good)"/>
+              <circle cx="230" cy="50" r="9" fill="var(--rule)"/>
+              <text x="150" y="70" text-anchor="middle" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">independent, random errors — correctable</text>
+              <text x="15" y="110" font-size="9" fill="var(--measured)" font-family="ui-monospace,monospace">TLS memory gives:</text>
+              <circle cx="90" cy="115" r="9" fill="var(--measured)"/>
+              <circle cx="140" cy="115" r="9" fill="var(--measured)"/>
+              <circle cx="190" cy="115" r="9" fill="var(--measured)"/>
+              <circle cx="230" cy="115" r="9" fill="var(--rule)"/>
+              <path d="M90,115 L190,115" stroke="var(--measured)" stroke-width="2" stroke-dasharray="2 2"/>
+              <text x="150" y="140" text-anchor="middle" font-size="8" fill="var(--measured)" font-family="ui-monospace,monospace">correlated — same TLS hits 3 gates running</text>
+            </svg>
+          </div>
+          <p class="diagram-caption">Error correction's math is built on the top row. TLS memory produces the bottom row instead.</p>
+        </div>
+        <div class="text-panel">
+          <p>Standard quantum error correction is designed and proven under the assumption that errors on different gates/qubits are <b>independent</b> — random, uncorrelated accidents. That assumption is what lets redundancy (spreading information across many physical qubits) actually work: independent errors are individually unlikely to all hit the same logical information at once.</p>
+          <p>A TLS with memory breaks this. If gate 1 disturbs a nearby TLS and that disturbance hasn't faded by gates 2 and 3, the <i>same</i> underlying disturbance can affect multiple gates in the sequence — a <a href="#note-correlated-error" class="sym-link"><b>correlated error</b></a>, not an independent one. Correlated errors are substantially harder for standard error-correction codes to handle, and can silently reduce the effective protection the code was designed to provide.</p>
+          <div class="callout callout-paper">
+            <span class="label">why this isn't a side finding</span>
+            This is precisely why the paper doesn't treat TLS defects as "just more noise" — a TLS with memory effects on gate-sequence timescales is a structural threat to an assumption error correction depends on, not merely an additional source of decoherence to average away.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="entry" id="sec-opportunities">
+      <div class="entry-head"><span class="entry-tag">2.4</span></div>
+      <h2 class="entry-title">The two opportunities this opens up</h2>
+      <p style="margin-top:-4px; color:var(--ink-soft); font-size:14px;">The paper's own authors name both of these directly — this is why your fall research plan branches exactly here.</p>
+      <div class="flow-chain">
+        <div class="flow-node emph">TLS memory found on gate-sequence timescales</div><span class="flow-arrow">→</span>
+        <div class="flow-node">design a pulse creating destructive interference in TLS dynamics</div><span class="flow-arrow">→</span>
+        <div class="flow-node">suppresses TLS-induced decoherence (Branch B)</div>
+      </div>
+      <div class="flow-chain">
+        <div class="flow-node emph">driven-TLS model produces dressed states, sidebands</div><span class="flow-arrow">→</span>
+        <div class="flow-node">extract material-specific spectral fingerprints</div><span class="flow-arrow">→</span>
+        <div class="flow-node">guides defect mitigation, informs Hamiltonian learning (Branch A)</div>
+      </div>
+      <div class="callout callout-code">
+        <span class="label">where this goes next</span>
+        Both branches, and why one is the primary fall deliverable and the other a stretch goal, are laid out in full in <span class="mono">BCTDS_FALL_RESEARCH_PLAN.md</span> — this notebook covers the physics underneath that plan, not the project management of it.
+      </div>
+    </section>
+
+    <section class="entry" id="sec-hamlearn">
+      <div class="entry-head"><span class="entry-tag">2.5</span></div>
+      <h2 class="entry-title">Hamiltonian learning — figuring out the H you actually have</h2>
+      <div class="entry-grid">
+        <div>
+          <div class="diagram-panel">
+            <svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
+              <line x1="20" y1="130" x2="240" y2="130" stroke="var(--ink-soft)" stroke-width="1.2"/>
+              <text x="130" y="145" text-anchor="middle" font-size="9" fill="var(--ink-soft)" font-family="ui-monospace,monospace">parameter value</text>
+              <line x1="20" y1="30" x2="240" y2="30" stroke="var(--rule)" stroke-width="4"/>
+              <text x="252" y="34" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">rd 1</text>
+              <line x1="20" y1="60" x2="130" y2="60" stroke="var(--accent)" stroke-width="4" opacity="0.7"/>
+              <text x="252" y="64" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">rd 2</text>
+              <line x1="65" y1="90" x2="130" y2="90" stroke="var(--accent)" stroke-width="4" opacity="0.9"/>
+              <text x="252" y="94" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">rd 3</text>
+              <path d="M100,118 l6,-10 l6,10 z" fill="var(--measured)"/>
+              <text x="106" y="128" text-anchor="middle" font-size="8" fill="var(--measured)" font-family="ui-monospace,monospace">true value</text>
+            </svg>
+          </div>
+          <p class="diagram-caption">Binary-search tracking: each round's measurement halves the uncertainty instead of re-measuring everything — adaptive, not exhaustive.</p>
+        </div>
+        <div class="text-panel">
+          <p>Knowing a device's exact <a href="#note-hamiltonian" class="sym-link">Hamiltonian</a> — its ω, coupling J, asymmetry ε, tunneling Δ — is what would let you predict and control it perfectly. In practice you never know it exactly: it has to be inferred from measurements, and it drifts, so this has to be redone repeatedly, not once. This inference problem is <a href="#note-hamiltonian" class="sym-link"><b>Hamiltonian learning</b></a>.</p>
+          <div class="flow-chain">
+            <div class="flow-node">drive at varying duration</div><span class="flow-arrow">→</span>
+            <div class="flow-node">measure Rabi oscillation</div><span class="flow-arrow">→</span>
+            <div class="flow-node">fit / infer</div><span class="flow-arrow">→</span>
+            <div class="flow-node emph">Hamiltonian params (ω, J, ε, Δ)</div>
+          </div>
+          <p>That's the passive version — the standard technique (<a href="#note-rabi-osc" class="sym-link">Rabi experiments</a>) used by Siddiqi's AQT lab. A more active version, used by Oliver's group, is <b>binary-search Hamiltonian tracking</b>: instead of fitting a fixed batch of data, each next measurement is chosen specifically to cut the current uncertainty in half — narrowing in on the true value the way binary search narrows in on a value in a sorted list, shown at left. This is especially valuable for <i>tracking</i> a parameter that's slowly drifting, not just measuring it once.</p>
+          <div class="callout callout-code">
+            <span class="label">where this connects to Branch A</span>
+            Your Hamiltonian-learning branch automates exactly the passive version above — replacing one-trace-at-a-time manual fitting with a model trained on simulated traces where the true parameters are already known.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="entry checklist" id="sec-phase2-check">
+      <div class="entry-head"><span class="entry-tag">2.6</span></div>
+      <h2 class="entry-title">Self-check — Phase 2 (gates, memory, Hamiltonian learning)</h2>
+      <p style="margin-top:-6px; color:var(--ink-soft); font-size:14px;">Same conversational bar as Phase 0's check. Note: this covers the memory-effects/Hamiltonian-learning slice of Phase 2 specifically — the basic T1/T2, γ vs. γ_φ mechanics previewed below are still a separate, not-yet-written piece of Phase 2.</p>
+      <ul class="checklist" id="checklist-2">
+        <li><input type="checkbox" id="chk-2a"/><span>Can explain what a gate sequence is and why the short delays between gates matter.</span></li>
+        <li><input type="checkbox" id="chk-2b"/><span>Can explain, in one breath, what a "memory effect" is and how it differs from clean exponential decay.</span></li>
+        <li><input type="checkbox" id="chk-2c"/><span>Can explain why correlated errors are harder for error correction than independent ones — and why TLS memory produces correlated errors.</span></li>
+        <li><input type="checkbox" id="chk-2d"/><span>Can name the two opportunities the paper flags, and which of your two fall-semester branches answers each one.</span></li>
+        <li><input type="checkbox" id="chk-2e"/><span><b>The one that matters most:</b> can explain the difference between Rabi-based Hamiltonian learning and binary-search tracking, and why the second is "adaptive."</span></li>
+      </ul>
+      <div class="notes-label">
+        <span>Your own one-paragraph version — the "why TLS memory matters" elevator pitch</span>
+        <span class="saved-flag mono" id="saved-flag-2">saved</span>
+      </div>
+      <textarea class="notes-field" id="notes-2" placeholder="Write it in your own words — this is what you'd say to Chris or Fitzpatrick if asked why the suppression-pulse project matters."></textarea>
+    </section>
+
   </main>
 
   <footer class="next-up" id="sec-phase2-preview">
-    <div class="phase-next-title">Next: Phase 2 — Dissipation</div>
-    <p>γ vs γ_φ, T1 vs T2, and why your two-pulse figures can tell homogeneous decay apart from inhomogeneous broadening. Same format — diagrams first — added to this notebook when you're ready to start it. Say the word and it gets appended below Phase 1.</p>
+    <div class="phase-next-title">Still open in Phase 2, then Phase 3 — Two pulses</div>
+    <p>The basic T1/T2, γ vs γ_φ decay-rate mechanics previewed here originally are still not yet written — 2.1–2.6 above covered the gate-sequence/memory-effects/Hamiltonian-learning slice specifically, not that foundational piece. Say the word and either the rest of Phase 2 or Phase 3 (why your two-pulse figures can tell homogeneous decay apart from inhomogeneous broadening) gets appended next, same format — diagrams first.</p>
   </footer>
 
   <a href="#sec-notation" class="jump-link">🔤 notation</a>
@@ -644,9 +825,17 @@
       <a href="#sec-rwa" role="menuitem"><span class="snav-num">1.5</span>The RWA</a>
       <a href="#sec-exit" role="menuitem"><span class="snav-num">1.6</span>Exit test</a>
 
+      <div class="snav-group-title">Phase 2 — Gates, memory &amp; Hamiltonian learning</div>
+      <a href="#sec-gates" role="menuitem"><span class="snav-num">2.1</span>Gate sequences</a>
+      <a href="#sec-memory" role="menuitem"><span class="snav-num">2.2</span>TLS memory effects</a>
+      <a href="#sec-errorcorr" role="menuitem"><span class="snav-num">2.3</span>Threat to error correction</a>
+      <a href="#sec-opportunities" role="menuitem"><span class="snav-num">2.4</span>The two opportunities</a>
+      <a href="#sec-hamlearn" role="menuitem"><span class="snav-num">2.5</span>Hamiltonian learning</a>
+      <a href="#sec-phase2-check" role="menuitem"><span class="snav-num">2.6</span>Self-check</a>
+
       <div class="snav-group-title">Reference</div>
       <a href="#sec-notation" role="menuitem"><span class="snav-num">↑</span>Notation decoder</a>
-      <div class="snav-note">Phase 2 onward will appear here as they're added.</div>
+      <div class="snav-note">Basic T1/T2 (rest of Phase 2) and Phase 3 onward will appear here as they're added.</div>
     </nav>
   </div>
 
