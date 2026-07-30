@@ -102,14 +102,6 @@
   table.cmp tr.ours td { background: var(--accent-soft); }
   .caveat { margin-top: 10px; font-size: 12.5px; color: var(--ink-soft); border-left: 2px solid var(--rule); padding-left: 10px; }
 
-  /* ---------- collaboration split ---------- */
-  .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 640px) { .split-grid { grid-template-columns: 1fr; } }
-  .split-card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); }
-  .split-card .who { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block; }
-  .split-card ul { margin: 0; padding-left: 18px; font-size: 13.5px; }
-  .split-card li { margin-bottom: 4px; }
-
   footer.page-footer { border-top: 1px solid var(--rule); padding-top: 18px; font-size: 12.5px; color: var(--ink-soft); }
 </style>
 </head>
@@ -124,11 +116,11 @@
     </div>
     <h1 class="title serif">Research Direction — ML Pulse Suppression of TLS Defects</h1>
     <p class="subtitle">The only path now. Using ML to find pulse sequences that destructively
-    interfere with TLS defect dynamics and suppress the decoherence they cause — built jointly
-    with Sheeraja on real experimental BCTDS data, directly extending the paper's own coherent-control
-    result. Click any phase to open it.</p>
+    interfere with TLS defect dynamics and suppress the decoherence they cause — built on real
+    experimental BCTDS data, directly extending the paper's own coherent-control result. Click any
+    phase to open it.</p>
     <div class="source-links">
-      <span class="source-chip">TLS-ML-Paper (w/ Sheeraja)</span>
+      <span class="source-chip">TLS-ML-Paper</span>
       <span class="source-chip">FIRST PASS GITHUB.pdf</span>
       <span class="source-chip">BCTDS manuscript codebase</span>
     </div>
@@ -154,7 +146,7 @@
   <section class="block">
     <h2 class="block-title serif">Build flowchart</h2>
     <p class="block-note">One path, five stages. <span class="status-chip done">done</span> =
-    already exists (Sheeraja's exploratory scripts). <span class="status-chip new">new</span> =
+    already exists (prior exploratory scripts). <span class="status-chip new">new</span> =
     new work this fall.</p>
 
     <div class="flow">
@@ -170,7 +162,7 @@
         </summary>
         <div class="phase-body">
           <h4>What it is</h4>
-          <p>Sheeraja's <code>First_Pass.py</code> / <code>Second_Pass.py</code> / <code>Third_Pass.py</code>
+          <p><code>First_Pass.py</code> / <code>Second_Pass.py</code> / <code>Third_Pass.py</code>
           — PCA/clustering on phase-FFT slices, IsolationForest anomaly detection across 42
           pulse-width conditions, and an MLP testing whether near-future signal is predictable at
           all (checked against a shuffled-target control and a mean baseline).</p>
@@ -286,26 +278,6 @@
         describable result even without a publication.</p>
       </div>
 
-    </div>
-  </section>
-
-  <section class="block">
-    <h2 class="block-title serif">Collaboration split</h2>
-    <p class="block-note">By deliverable, not "50/50 across everything" &mdash; so each stage has
-    one clearly attributable owner when it's time to describe individual contribution.</p>
-    <div class="split-grid">
-      <div class="split-card">
-        <span class="who">Person A</span>
-        <ul>
-          <li>Fill in once agreed</li>
-        </ul>
-      </div>
-      <div class="split-card">
-        <span class="who">Person B</span>
-        <ul>
-          <li>Fill in once agreed</li>
-        </ul>
-      </div>
     </div>
   </section>
 
