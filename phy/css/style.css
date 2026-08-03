@@ -631,3 +631,62 @@
     font-size: 14px;
   }
   footer.next-up .phase-next-title { color: var(--ink); font-weight: 600; font-family: "Iowan Old Style", Georgia, serif; font-size: 17px; }
+
+  /* ---------- nav row / home button (papers section) ---------- */
+  .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .home-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: ui-monospace, monospace; font-size: 13px; font-weight: 600;
+    color: var(--accent); background: var(--accent-soft); text-decoration: none;
+    padding: 8px 14px; border-radius: 999px; border: 1px solid transparent;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
+  }
+  .home-btn:hover { background: var(--accent); color: var(--paper-raised); box-shadow: var(--shadow); transform: translateY(-1px); }
+  .home-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---------- papers list ---------- */
+  .papers-grid { display: flex; flex-direction: column; gap: 14px; }
+  a.paper-card {
+    display: block; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 10px;
+    box-shadow: var(--shadow); padding: 18px 20px; text-decoration: none; color: inherit;
+    transition: border-color 0.12s ease, transform 0.12s ease;
+  }
+  a.paper-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  a.paper-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .paper-card .ptag {
+    font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--measured); display: block; margin-bottom: 6px;
+  }
+  .paper-card h3 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 18px; margin: 0 0 6px; font-weight: 600; color: var(--ink);
+  }
+  .paper-card .pmeta { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 8px; }
+  .paper-card .psnippet { font-size: 13.5px; color: var(--ink-soft); margin: 0; }
+  .paper-card .pgo {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+    font-family: ui-monospace, monospace; font-size: 12px; color: var(--accent); font-weight: 600;
+  }
+  .paper-card:hover .pgo .arrow { transform: translateX(3px); }
+  .paper-card .pgo .arrow { display: inline-block; transition: transform 0.15s ease; }
+
+  /* ---------- paper detail page ---------- */
+  .paper-meta-block { color: var(--ink-soft); font-size: 14px; margin: 0 0 22px; line-height: 1.6; }
+  .paper-meta-block b { color: var(--ink); }
+  .paper-meta-block a { color: var(--accent); }
+  blockquote.abstract {
+    margin: 0 0 30px; padding: 16px 18px; background: var(--paper); border: 1px solid var(--rule);
+    border-left: 3px solid var(--ink-soft); border-radius: 6px; font-size: 14.5px; line-height: 1.65; color: var(--ink);
+  }
+  blockquote.abstract .abs-label {
+    font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-soft); display: block; margin-bottom: 8px;
+  }
+
+  /* inline highlight for "this is the part relevant to your suppression work" */
+  mark.relevant {
+    background: var(--measured-soft); color: var(--measured); font-weight: 700;
+    text-decoration: underline; text-decoration-color: var(--measured);
+    text-decoration-thickness: 1.5px; text-underline-offset: 2px;
+    padding: 1px 3px; border-radius: 3px;
+  }

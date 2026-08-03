@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Mitigating Losses of Superconducting Qubits Strongly Coupled to Defect Modes — Papers</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .legend { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink-soft); margin: -8px 0 26px; }
+  .legend mark.relevant { font-size: 11px; padding: 1px 5px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="notebook-header">
+    <div class="nav-row">
+      <span class="eyebrow">Physics gap · paper breakdown</span>
+      <a class="home-btn" href="../index.html">🏠 Home</a>
+    </div>
+    <h1 class="title serif">Mitigating Losses of Superconducting Qubits Strongly Coupled to Defect Modes</h1>
+    <p class="paper-meta-block">
+      <b>Authors:</b> D. Colao Zanuz, Q. Ficheux, L. Michaud, A. Orekhov, K. Hanke, A. Flasby, M. Bahrami Panah, G. J. Norris, M. Kerschbaum, A. Remm, F. Swiadek, C. Hellings, S. Lazăr, C. Scarato, N. Lacroix, S. Krinner, <b>C. Eichler</b>, A. Wallraff, J.-C. Besse<br>
+      <b>Affiliation:</b> Department of Physics &amp; Quantum Center, ETH Zurich; ETH Zurich–PSI Quantum Computing Hub<br>
+      <b>Source:</b> <a href="https://arxiv.org/abs/2407.18746" target="_blank" rel="noopener">arXiv:2407.18746</a> — dated 26 Jul 2024
+    </p>
+    <div class="crosslink"><a href="index.html">&larr; All papers</a></div>
+  </header>
+
+  <main>
+
+    <section class="entry">
+      <div class="entry-head"><span class="entry-tag">ABSTRACT</span></div>
+      <blockquote class="abstract">
+        <span class="abs-label">Verbatim</span>
+        The dominant contribution to the energy relaxation of state-of-the-art superconducting qubits
+        is often attributed to their coupling to an ensemble of material defects which behave as
+        two-level systems. These defects have varying microscopic characteristics which result in a
+        large range of observable defect properties such as resonant frequencies, coherence times and
+        coupling rates to qubits g. Here, we investigate strategies to mitigate losses to the family
+        of defects that strongly couple to qubits (g/2π ≥ 0.5&nbsp;MHz). Such strongly coupled defects
+        are particularly detrimental to the coherence of qubits and to the fidelities of operations
+        relying on frequency excursions, such as flux-activated two-qubit gates. To assess their
+        impact, we perform swap spectroscopy on 92 frequency-tunable qubits and quantify the spectral
+        density of these strongly coupled modes. We show that the frequency configuration of the
+        defects is rearranged by warming up the sample to room temperature, whereas the total number
+        of defects on a processor tends to remain constant. We then explore methods for fabricating
+        qubits with a reduced number of strongly coupled defect modes by systematically measuring
+        their spectral density for decreasing Josephson junction dimensions and for various surface
+        cleaning methods. Our results provide insights into the properties of strongly coupled defect
+        modes and show the benefits of minimizing Josephson junction dimensions to improve qubit
+        properties.
+      </blockquote>
+    </section>
+
+    <section class="entry">
+      <div class="entry-head"><span class="entry-tag">MEANING</span></div>
+      <h2 class="entry-title">What this actually says, in plain terms</h2>
+      <div class="legend">Highlighted text = directly relevant to your pulse-suppression work <mark class="relevant">like this</mark></div>
+
+      <div class="text-panel">
+        <p>The main reason qubits lose their quantum state over time is believed to be that they're
+        coupled to tiny material defects in the chip — atomic-scale imperfections that behave like
+        miniature qubits themselves (two-level systems, TLS). Not all defects are the same: depending
+        on their exact atomic structure, each one has its own resonance frequency, its own coherence
+        time, and — critically — its own interaction strength with the qubit, labeled <b>g</b>.</p>
+
+        <p>This paper focuses specifically on the <b>strongly coupled</b> defects (g/2π ≥ 0.5&nbsp;MHz)
+        — the small subset that are individually damaging, as opposed to the much larger population of
+        weakly coupled defects that just contribute background noise. <mark class="relevant">These
+        strong defects are especially harmful for operations that rely on "frequency excursions" —
+        deliberately shifting the qubit's frequency, as flux-activated two-qubit gates do</mark> —
+        because if that shift happens to land on a strongly-coupled defect's frequency, the operation
+        degrades or fails.</p>
+
+        <p>Their method: sweep each of 92 qubits across a range of frequencies and watch where the
+        qubit "leaks" energy into something else (swap spectroscopy). From that, they build a
+        <b>spectral density of strongly coupled defect modes</b> — essentially a count of how many
+        strong defects show up per unit of frequency bandwidth.</p>
+
+        <p><mark class="relevant">The central finding: if you warm the chip up and cool it back down,
+        the defects' individual frequencies reshuffle — they don't stay put — but the total count of
+        defects per qubit stays roughly the same, cooldown after cooldown.</mark> The defect map is
+        not static.</p>
+
+        <p>Having established how to measure the problem, they test fabrication-level fixes: smaller
+        Josephson junctions and different surface-cleaning treatments both measurably reduce the
+        number of strong defects — a real, actionable lever for building better qubits at the
+        hardware level, separate from anything a control pulse can do after the fact.</p>
+      </div>
+    </section>
+
+    <section class="entry">
+      <div class="entry-head"><span class="entry-tag">RELEVANCE</span></div>
+      <h2 class="entry-title">Why this matters to the suppression project specifically</h2>
+
+      <div class="callout callout-paper">
+        <span class="label">1 &middot; the defect map isn't fixed — suppression has to account for that</span>
+        A pulse tuned to destructively interfere with one cooldown's defect configuration won't
+        necessarily transfer to the next cooldown, since the defects it was designed around may have
+        physically moved. A suppression strategy probably needs to be re-calibratable per cooldown,
+        or adaptive, rather than a single fixed solution learned once.
+      </div>
+
+      <div class="callout callout-paper">
+        <span class="label">2 &middot; the risk you raised: suppressing the defect, not the qubit interaction</span>
+        This paper is the direct evidence for that concern. Two-qubit gates rely on "frequency
+        excursions" — deliberately bringing the qubit close to resonance with a coupler or another
+        qubit. If a defect sits near that same operating point, a suppression pulse that isn't
+        spectrally selective can't distinguish "defect I want to cancel" from "coupler I want to use."
+        The practical fix, visible elsewhere in this literature (leakage reduction units, Net-Zero
+        gates), is <b>selective pulse shaping</b> — designing the cancellation to be narrow and
+        targeted, not blanket. For an ML-optimized search, this argues for a
+        <b>multi-objective</b> loss: minimize defect-induced decoherence <i>while</i> keeping gate
+        fidelity above a threshold, not a single-objective "suppress everything" target.
+      </div>
+
+      <div class="callout callout-paper">
+        <span class="label">3 &middot; a real precedent for ensemble-level characterization</span>
+        Their "spectral density of strongly coupled defect modes" (ρ<sub>DM</sub>) is a
+        population-level statistic across many qubits and devices — not one defect at a time. That's
+        the same ensemble framing already at the core of your own differentiated angle (TLS ensembles
+        via broadband spectroscopy), which makes this a legitimate, citable piece of prior art for
+        that framing, from a serious group.
+      </div>
+    </section>
+
+  </main>
+
+  <div class="crosslink" style="margin-top: 6px;"><a href="index.html">&larr; All papers</a></div>
+
+</div>
+</body>
+</html>
