@@ -646,6 +646,10 @@
 
   /* ---------- papers list ---------- */
   .papers-grid { display: flex; flex-direction: column; gap: 14px; }
+  .topics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .topics-grid { grid-template-columns: 1fr; } }
+  .topic-card h3 { font-size: 20px; }
+  .topic-card .psnippet { margin-bottom: 10px; }
   a.paper-card {
     display: block; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 10px;
     box-shadow: var(--shadow); padding: 18px 20px; text-decoration: none; color: inherit;

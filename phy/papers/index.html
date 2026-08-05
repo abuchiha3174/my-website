@@ -17,33 +17,30 @@
       <a class="home-btn" href="../index.html">🏠 Home</a>
     </div>
     <h1 class="title serif">Papers</h1>
-    <p class="subtitle">Source papers behind the pulse-suppression work, read closely and translated
-    into plain language — with the parts specifically relevant to your suppression tactic marked
-    inline, not buried in the jargon.</p>
-    <div class="source-links">
-      <span class="source-chip">TLS characterization</span>
-      <span class="source-chip">defect mitigation</span>
-      <span class="source-chip">pulse suppression</span>
-    </div>
+    <p class="subtitle">Source papers read closely and translated into plain language, grouped by
+    which strand of work they actually feed. Pick a topic to see its papers.</p>
   </header>
 
   <main>
-    <div class="papers-grid">
+    <div class="topics-grid">
 
-      <a class="paper-card" href="mitigating-losses-defect-modes.html">
-        <span class="ptag">TLS characterization · defect mitigation</span>
-        <h3>Mitigating Losses of Superconducting Qubits Strongly Coupled to Defect Modes</h3>
-        <p class="pmeta">D. Colao Zanuz, Q. Ficheux, ... C. Eichler, A. Wallraff, J.-C. Besse — ETH Zurich, arXiv:2407.18746 (2024)</p>
-        <p class="psnippet">Measures how many TLS defects couple strongly enough to individually damage a qubit, across 92 devices — and shows those defects reshuffle between cooldowns even though their total count stays constant. Directly relevant to whether a suppression pulse designed around one defect map will still work after the next thermal cycle.</p>
-        <span class="pgo">Read the breakdown <span class="arrow">&rarr;</span></span>
+      <a class="paper-card topic-card" href="topic-tls-suppression.html">
+        <span class="ptag">TOPIC · MAIN ANCHOR</span>
+        <h3>TLS defects &amp; pulse suppression</h3>
+        <p class="psnippet">Characterizing what TLS defects actually do to a qubit, and using
+        control pulses to cancel their effect — the BCTDS / TLS-ML-Paper direction.</p>
+        <p class="pmeta">2 papers</p>
+        <span class="pgo">Browse papers <span class="arrow">&rarr;</span></span>
       </a>
 
-      <a class="paper-card" href="dynamical-suppression-decoherence.html">
-        <span class="ptag">pulse suppression · foundational theory</span>
-        <h3>Dynamical Suppression of Decoherence in Two-State Quantum Systems</h3>
-        <p class="pmeta">Lorenza Viola, Seth Lloyd — MIT, Phys. Rev. A 58, 2733 (1998)</p>
-        <p class="psnippet">The foundational paper for dynamical decoupling — shows that flipping a qubit fast enough with control pulses can wash out decoherence entirely, for any noise spectrum. The theoretical ancestor of the whole suppression-pulse idea, with a concrete design condition (pulse spacing vs. noise correlation time) directly relevant to loss-function design.</p>
-        <span class="pgo">Read the breakdown <span class="arrow">&rarr;</span></span>
+      <a class="paper-card topic-card" href="topic-ea-design.html">
+        <span class="ptag">TOPIC · SECONDARY LENS</span>
+        <h3>Evolutionary / multi-mode qubit design</h3>
+        <p class="psnippet">Designing circuit architectures that are structurally more robust to
+        the same noise sources, using evolutionary search over circuit parameters — the
+        Desell-collaboration lens.</p>
+        <p class="pmeta">1 paper</p>
+        <span class="pgo">Browse papers <span class="arrow">&rarr;</span></span>
       </a>
 
     </div>

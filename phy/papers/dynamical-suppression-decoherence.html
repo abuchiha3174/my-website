@@ -81,6 +81,53 @@
     </section>
 
     <section class="entry">
+      <div class="entry-head"><span class="entry-tag">WALKTHROUGH</span></div>
+      <h2 class="entry-title">Step by step, in order</h2>
+      <p class="notation-intro">Same paper as above, worked through as a sequence rather than a
+      summary — each step builds on the last. Filled in as it's covered; steps not yet written are
+      marked "up next."</p>
+
+      <div class="callout callout-paper">
+        <span class="label">Step 1 &middot; the problem</span>
+        A qubit's quantum information lives in its <b>phase</b> — think of a clock's second hand, or a
+        compass needle's exact heading. Couple that qubit to a messy environment (modeled here as a huge
+        collection of tiny oscillators at every frequency, all weakly nudging it) and the phase starts
+        drifting randomly instead of ticking predictably. Once the phase is lost, so is the quantum
+        information — that drift is dephasing, one flavor of decoherence.
+        <br><br>
+        The question the paper asks: can you stop that drift <i>using only external control</i> — not by
+        isolating the qubit better, not by correcting errors after the fact, but by actively doing
+        something to the qubit while it sits in the noisy bath? Their answer, previewed: yes — flip the
+        qubit's state back and forth, fast, over and over ("bang-bang" control). The rest of the paper is
+        showing rigorously why that works and how fast "fast" has to be.
+      </div>
+
+      <div class="callout callout-paper">
+        <span class="label">Step 2 &middot; how the noise gets written down &mdash; up next</span>
+        How the qubit + bath interaction (Eq. 1) is set up mathematically, and what "coherence"
+        (ρ₀₁(t)) means as a single number that decays over time.
+      </div>
+
+      <div class="callout callout-paper">
+        <span class="label">Step 3 &middot; the fix &mdash; up next</span>
+        The pulse sequence itself (Eqs. 19&ndash;20) and the elementary spin-flip cycle (Sec. IIIA) — what
+        one π-pulse actually does to the evolution operator.
+      </div>
+
+      <div class="callout callout-paper">
+        <span class="label">Step 4 &middot; why flipping cancels the noise &mdash; up next</span>
+        The time-reversal / spin-echo mechanism (Sec. IIID) — the physical reason repeated flipping
+        works, not just the math.
+      </div>
+
+      <div class="callout callout-paper">
+        <span class="label">Step 5 &middot; the headline result and the catch &mdash; up next</span>
+        Complete suppression in the continuous-flipping limit (Eq. 49) — and the practical condition
+        (ωΔt&nbsp;≤&nbsp;π/2, Eq. 44) that determines when this actually helps instead of hurting.
+      </div>
+    </section>
+
+    <section class="entry">
       <div class="entry-head"><span class="entry-tag">RELEVANCE</span></div>
       <h2 class="entry-title">Why this matters to the suppression project specifically</h2>
 
