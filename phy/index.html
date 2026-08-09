@@ -51,7 +51,7 @@
         <table class="notation-table">
           <thead><tr><th>Symbol</th><th>Say it</th><th>Plain meaning</th><th>Where</th></tr></thead>
           <tbody>
-            <tr id="note-ket-ge"><td class="sym">|g⟩, |e⟩</td><td class="say">"ket g", "ket e"</td><td>The two basis states: ground and excited. These are the two poles of the Bloch sphere. "Ground" means <i>lowest-energy</i>, not <i>zero</i>-energy — a defect sitting in |g⟩ has whatever baseline energy the system has at rest; it just isn't glowing (nothing lower to relax into, so no emission).</td><td class="where"><a href="#sec-hilbert">1.1</a></td></tr>
+            <tr id="note-ket-ge"><td class="sym">|g⟩, |e⟩</td><td class="say">"ket g", "ket e"</td><td>The two basis states: ground and excited. These are the two poles of the <a href="#note-bloch-sphere" class="sym-link">Bloch sphere</a>. "Ground" means <i>lowest-energy</i>, not <i>zero</i>-energy — a defect sitting in |g⟩ has whatever baseline energy the system has at rest; it just isn't glowing (nothing lower to relax into, so no emission).</td><td class="where"><a href="#sec-hilbert">1.1</a></td></tr>
             <tr id="note-ket-01"><td class="sym">|0⟩, |1⟩</td><td class="say">"ket zero", "ket one"</td><td>Same idea, computer-science naming. <span class="mono">|0⟩=|g⟩</span>, <span class="mono">|1⟩=|e⟩</span> — two names for the same two poles.</td><td class="where"><a href="#sec-qubit-what">0.1</a></td></tr>
             <tr id="note-ket-psi"><td class="sym">|ψ⟩</td><td class="say">"ket psi"</td><td>Generic placeholder name for "whatever state we're currently talking about."</td><td class="where"><a href="#sec-qubit-what">0.1</a>, <a href="#sec-hilbert">1.1</a></td></tr>
             <tr id="note-alpha-beta"><td class="sym">α, β</td><td class="say">"alpha, beta"</td><td>Complex numbers (amplitudes) that say how much <span class="mono">|0⟩</span> and <span class="mono">|1⟩</span> are mixed in. <span class="mono">|α|²</span> is literally the probability of measuring 0.</td><td class="where"><a href="#sec-qubit-what">0.1</a></td></tr>
@@ -121,7 +121,7 @@
             <tr id="note-bloch-sphere"><td class="sym" style="font-size:14px;">Bloch sphere</td><td class="say">the picture</td><td>The geometric way of drawing any single TLS/qubit state as a point on a sphere. It isn't new physics — it's just a picture of the same two numbers (α, β), up to an overall phase you can't measure anyway.</td><td class="where"><a href="#sec-hilbert">1.1</a></td></tr>
             <tr id="note-eigenstate"><td class="sym" style="font-size:14px;">Eigenstate</td><td class="say">a state that "sticks"</td><td>A state that doesn't change character under a given operator — left alone with no drive, an <i>energy eigenstate</i> (like <span class="mono">|g⟩</span> or <span class="mono">|e⟩</span>) just sits there (up to an unobservable overall phase) instead of evolving into some mix.</td><td class="where"><a href="#sec-hilbert">1.1</a></td></tr>
             <tr id="note-superposition"><td class="sym" style="font-size:14px;">Superposition</td><td class="say">genuinely both, not either/or</td><td>A state that's a real combination of two basis states at once — different from a classical "50/50 chance" because the <i>relative phase</i> between the two parts is physically real and produces interference.</td><td class="where"><a href="#sec-qubit-what">0.1</a>, <a href="#sec-qubit-power">0.2</a></td></tr>
-            <tr id="note-longitude"><td class="sym" style="font-size:14px;">Longitude</td><td class="say">where the phase lives</td><td>On the Bloch sphere, how far <i>north/south</i> you are (latitude) encodes the population split |α|² vs |β|²; how far <i>east/west</i> you are (longitude) encodes the relative phase between α and β. Two states with identical populations but different phase sit at different longitudes.</td><td class="where"><a href="#sec-hilbert">1.1</a></td></tr>
+            <tr id="note-longitude"><td class="sym" style="font-size:14px;">Longitude</td><td class="say">where the phase lives</td><td>On the <a href="#note-bloch-sphere" class="sym-link">Bloch sphere</a>, how far <i>north/south</i> you are (latitude) encodes the population split |α|² vs |β|²; how far <i>east/west</i> you are (longitude) encodes the relative phase between α and β. Two states with identical populations but different phase sit at different longitudes.</td><td class="where"><a href="#sec-hilbert">1.1</a></td></tr>
             <tr id="note-pauli-operators"><td class="sym" style="font-size:14px;">Pauli operators</td><td class="say">the complete toolkit</td><td>The collective name for {σx, σy, σz} (plus the identity). Every possible Hamiltonian or observable on a single TLS can be written as some combination of these four — σ⁻ and σ⁺ are themselves built from σx and σy.</td><td class="where"><a href="#sec-hilbert">1.1</a></td></tr>
             <tr id="note-hilbert-space"><td class="sym" style="font-size:14px;">Hilbert space</td><td class="say">the space states live in</td><td>The vector space of allowed quantum states. One TLS → 2-dimensional. N TLS → 2<sup>N</sup>-dimensional (not 2N — this is <i>why</i> N qubits are so powerful, and so hard to simulate classically).</td><td class="where"><a href="#sec-hilbert">1.1</a></td></tr>
             <tr id="note-entanglement"><td class="sym" style="font-size:14px;">Entanglement</td><td class="say">correlation with no classical version</td><td>A joint state of two-plus qubits that can't be broken down into independent per-qubit states. The correlations are real and measurable but have no classical explanation.</td><td class="where"><a href="#sec-qubit-what">0.1</a></td></tr>
@@ -137,11 +137,12 @@
         <table class="notation-table">
           <thead><tr><th>Term</th><th>In one phrase</th><th>What it means</th><th>Where</th></tr></thead>
           <tbody>
-            <tr id="note-josephson"><td class="sym" style="font-size:14px;">Josephson junction</td><td class="say">the key ingredient</td><td>A nanometer-thin insulating barrier between two superconductors that Cooper pairs can tunnel through. Acts as a nonlinear, dissipationless inductor — the one part that makes a superconducting qubit possible at all.</td><td class="where"><a href="#sec-qubit-transmon">0.4</a></td></tr>
-            <tr id="note-transmon"><td class="sym" style="font-size:14px;">Transmon</td><td class="say">the dominant qubit design</td><td>A Josephson junction shunted by a large capacitor — trades a little anharmonicity for much lower sensitivity to charge noise. <b>Not</b> what BCTDS itself is built from — BCTDS drives and reads out TLS ensembles directly through a broadband waveguide, no qubit in the loop. Transmons matter to your work as the <i>qubit-based</i> alternative your broadband approach is differentiated against.</td><td class="where"><a href="#sec-qubit-transmon">0.4</a></td></tr>
-            <tr id="note-anharmonic"><td class="sym" style="font-size:14px;">Anharmonic</td><td class="say">unevenly spaced levels</td><td>Energy levels that are <i>not</i> evenly spaced, unlike a plain LC oscillator. This unevenness is exactly what lets a pulse address only the bottom two levels and ignore the rest.</td><td class="where"><a href="#sec-qubit-transmon">0.4</a></td></tr>
-            <tr id="note-artificial-atom"><td class="sym" style="font-size:14px;">Artificial atom</td><td class="say">an honest nickname</td><td>What a transmon effectively is: discrete, addressable energy levels, just like a real atom — except the frequencies are set by circuit design, not by nature.</td><td class="where"><a href="#sec-qubit-transmon">0.4</a></td></tr>
-            <tr id="note-amorphous"><td class="sym" style="font-size:14px;">Amorphous solid</td><td class="say">glass-like, disordered</td><td>A material with no long-range crystalline order. The oxide layers and interfaces on a qubit chip are amorphous — precisely why they host TLS defects at all (crystals mostly don't).</td><td class="where"><a href="#sec-qubit-tls-link">0.5</a></td></tr>
+            <tr id="note-lc-oscillator"><td class="sym" style="font-size:14px;">LC oscillator</td><td class="say">the base circuit</td><td>A capacitor and inductor wired in a loop, with energy sloshing between the capacitor's electric field and the inductor's magnetic field at frequency ω = 1/√(LC) — the electrical analogue of a pendulum. Quantized, it gives evenly spaced energy levels, which is exactly the problem a Josephson junction has to fix.</td><td class="where"><a href="#sec-lc-oscillator">0.4</a></td></tr>
+            <tr id="note-josephson"><td class="sym" style="font-size:14px;">Josephson junction</td><td class="say">the key ingredient</td><td>A nanometer-thin insulating barrier between two superconductors that Cooper pairs can tunnel through. Acts as a nonlinear, dissipationless inductor — the one part that makes a superconducting qubit possible at all.</td><td class="where"><a href="#sec-qubit-transmon">0.5</a></td></tr>
+            <tr id="note-transmon"><td class="sym" style="font-size:14px;">Transmon</td><td class="say">the dominant qubit design</td><td>A Josephson junction shunted by a large capacitor — trades a little anharmonicity for much lower sensitivity to charge noise. <b>Not</b> what BCTDS itself is built from — BCTDS drives and reads out TLS ensembles directly through a broadband waveguide, no qubit in the loop. Transmons matter to your work as the <i>qubit-based</i> alternative your broadband approach is differentiated against.</td><td class="where"><a href="#sec-qubit-transmon">0.5</a></td></tr>
+            <tr id="note-anharmonic"><td class="sym" style="font-size:14px;">Anharmonic</td><td class="say">unevenly spaced levels</td><td>Energy levels that are <i>not</i> evenly spaced, unlike a plain <a href="#note-lc-oscillator" class="sym-link">LC oscillator</a>. This unevenness is exactly what lets a pulse address only the bottom two levels and ignore the rest.</td><td class="where"><a href="#sec-qubit-transmon">0.5</a></td></tr>
+            <tr id="note-artificial-atom"><td class="sym" style="font-size:14px;">Artificial atom</td><td class="say">an honest nickname</td><td>What a transmon effectively is: discrete, addressable energy levels, just like a real atom — except the frequencies are set by circuit design, not by nature.</td><td class="where"><a href="#sec-qubit-transmon">0.5</a></td></tr>
+            <tr id="note-amorphous"><td class="sym" style="font-size:14px;">Amorphous solid</td><td class="say">glass-like, disordered</td><td>A material with no long-range crystalline order. The oxide layers and interfaces on a qubit chip are amorphous — precisely why they host TLS defects at all (crystals mostly don't).</td><td class="where"><a href="#sec-qubit-tls-link">0.6</a></td></tr>
             <tr id="note-nisq"><td class="sym" style="font-size:14px;">NISQ</td><td class="say">today's hardware era</td><td>"Noisy Intermediate-Scale Quantum" — tens to low thousands of physical qubits, no full error correction yet. Every qubit in a NISQ device is limited by exactly the kind of decoherence your research characterizes.</td><td class="where"><a href="#sec-qubit-apps">0.3</a></td></tr>
           </tbody>
         </table>
@@ -157,8 +158,8 @@
             <tr id="note-rotating-frame"><td class="sym" style="font-size:14px;">Rotating frame</td><td class="say">a math trick, not new physics</td><td>A change of reference frame that spins along with the drive, so near-resonant physics looks slow/static instead of fast-oscillating. The move that makes the RWA possible in the first place.</td><td class="where"><a href="#sec-drive">1.3</a>, <a href="#sec-rwa">1.5</a></td></tr>
             <tr id="note-resonance"><td class="sym" style="font-size:14px;">Resonance / detuning</td><td class="say">on-target vs. off-target</td><td>"On resonance" means the drive frequency exactly matches the system's own frequency (ω_d = ω) — maximum effect. "Detuning" is how far off you are; see <a href="#note-delta" class="sym-link">δ</a>.</td><td class="where"><a href="#sec-rabi">1.4</a></td></tr>
             <tr id="note-rabi-osc"><td class="sym" style="font-size:14px;">Rabi oscillation</td><td class="say">the phenomenon itself</td><td>The named phenomenon (distinct from the symbol Ω): population flopping periodically between <span class="mono">|g⟩</span> and <span class="mono">|e⟩</span> under a resonant drive. The most basic proof a two-level system is being coherently driven at all.</td><td class="where"><a href="#sec-rabi">1.4</a></td></tr>
-            <tr id="note-dephasing-concept"><td class="sym" style="font-size:14px;">Dephasing</td><td class="say">losing the "which phase," not the energy</td><td>Loss of the definite relative phase between α and β without necessarily changing populations. Full math and the γ_φ symbol are Phase 2 — mentioned here because it's already named in Section 0.5.</td><td class="where"><a href="#sec-qubit-tls-link">0.5</a>, <a href="#sec-phase2-preview">Phase 2</a></td></tr>
-            <tr id="note-coherence-time"><td class="sym" style="font-size:14px;">Coherence time (T1, T2)</td><td class="say">the two numbers the whole field optimizes</td><td>T1 = how long a state's energy survives before relaxing. T2 = how long the relative phase survives (always ≤ 2×T1). TLS defects are what's currently capping both.</td><td class="where"><a href="#sec-qubit-tls-link">0.5</a></td></tr>
+            <tr id="note-dephasing-concept"><td class="sym" style="font-size:14px;">Dephasing</td><td class="say">losing the "which phase," not the energy</td><td>Loss of the definite relative phase between α and β without necessarily changing populations. Full math and the γ_φ symbol are Phase 2 — mentioned here because it's already named in Section 0.6.</td><td class="where"><a href="#sec-qubit-tls-link">0.6</a>, <a href="#sec-phase2-preview">Phase 2</a></td></tr>
+            <tr id="note-coherence-time"><td class="sym" style="font-size:14px;">Coherence time (T1, T2)</td><td class="say">the two numbers the whole field optimizes</td><td>T1 = how long a state's energy survives before relaxing. T2 = how long the relative phase survives (always ≤ 2×T1). TLS defects are what's currently capping both.</td><td class="where"><a href="#sec-qubit-tls-link">0.6</a></td></tr>
             <tr id="note-quasistatic"><td class="sym" style="font-size:14px;">Quasi-static</td><td class="say">"slow enough to call constant"</td><td>Describes a term that changes so slowly compared to the fastest timescale in the problem that you can treat it as effectively frozen — used to describe the surviving term in the RWA derivation.</td><td class="where"><a href="#sec-rwa">1.5</a></td></tr>
             <tr id="note-memory"><td class="sym" style="font-size:14px;">Memory effect / non-Markovian</td><td class="say">"it hasn't forgotten yet"</td><td>A process is <i>Markovian</i> (memoryless) if its future depends only on its current state, decaying cleanly. It's <i>non-Markovian</i> — has a "memory effect" — if its current behavior still depends on its past history, like an echo that hasn't fully faded. This is the paper's key finding about TLS relaxation.</td><td class="where"><a href="#sec-memory">2.2</a></td></tr>
             <tr id="note-gate-seq"><td class="sym" style="font-size:14px;">Gate sequence</td><td class="say">the instructions, run in order</td><td>An ordered series of gates applied to run an algorithm or an error-correction round, with short "interpulse delays" between each one.</td><td class="where"><a href="#sec-gates">2.1</a></td></tr>
@@ -203,7 +204,7 @@
           <p class="diagram-caption">A bit is a switch. A qubit is an arrow that can point anywhere — until you measure it, and it snaps to a pole.</p>
         </div>
         <div class="text-panel">
-          <p>A classical bit is always definitely 0 or definitely 1. A <b>qubit</b> is the same two-level object you just met on the Bloch sphere in Phase 1 — its state is <a href="#note-ket-psi" class="mono sym-link">|ψ⟩ = α|0⟩ + β|1⟩</a>, a genuine mixture of both, right up until you measure it.</p>
+          <p>A classical bit is always definitely 0 or definitely 1. A <b>qubit</b> is the same two-level object you just met on the <a href="#note-bloch-sphere" class="sym-link">Bloch sphere</a> in Phase 1 — its state is <a href="#note-ket-psi" class="mono sym-link">|ψ⟩ = α|0⟩ + β|1⟩</a>, a genuine mixture of both, right up until you measure it.</p>
           <div class="eq-box">
             <span class="corner-bl"></span><span class="corner-br"></span>
             <div class="eq-line">measure → get 0 with probability |α|², get 1 with probability |β|²  (|α|²+|β|² = 1)</div>
@@ -277,11 +278,65 @@
           <p>Variational algorithms (QAOA and friends) are actively researched for optimization and machine learning, but no proven, robust quantum advantage over the best classical methods exists yet for practical problems. Treat claims here skeptically.</p>
         </div>
       </div>
-      <p style="font-size: 13px; color: var(--ink-soft); margin-top: 4px;">All of this runs on today's <a href="#note-nisq" class="sym-link"><b>NISQ</b></a> (noisy intermediate-scale quantum) hardware — tens to low thousands of physical qubits, no full error correction yet. The gap between "proven speedup on paper" and "outperforms a classical computer on something useful, today" is still large. That gap is <i>exactly</i> a coherence-time problem — which is where Section 0.5 connects back to your own work.</p>
+      <p style="font-size: 13px; color: var(--ink-soft); margin-top: 4px;">All of this runs on today's <a href="#note-nisq" class="sym-link"><b>NISQ</b></a> (noisy intermediate-scale quantum) hardware — tens to low thousands of physical qubits, no full error correction yet. The gap between "proven speedup on paper" and "outperforms a classical computer on something useful, today" is still large. That gap is <i>exactly</i> a coherence-time problem — which is where Section 0.6 connects back to your own work.</p>
+    </section>
+
+    <!-- ============ PHASE 0: LC oscillator ============ -->
+    <section class="entry" id="sec-lc-oscillator">
+      <div class="entry-head"><span class="entry-tag">0.4</span></div>
+      <h2 class="entry-title">First, the plain circuit: what an LC oscillator is</h2>
+      <div class="entry-grid">
+        <div>
+          <div class="diagram-panel">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+              <text x="120" y="14" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">an LC loop</text>
+              <!-- circuit loop -->
+              <line x1="55" y1="30" x2="85" y2="30" stroke="var(--ink)" stroke-width="1.5"/>
+              <path d="M85,30 q7,-16 14,0 q7,16 14,0 q7,-16 14,0 q7,16 14,0" fill="none" stroke="var(--measured)" stroke-width="1.8"/>
+              <line x1="155" y1="30" x2="185" y2="30" stroke="var(--ink)" stroke-width="1.5"/>
+              <line x1="185" y1="30" x2="185" y2="100" stroke="var(--ink)" stroke-width="1.5"/>
+              <line x1="55" y1="30" x2="55" y2="100" stroke="var(--ink)" stroke-width="1.5"/>
+              <line x1="185" y1="100" x2="145" y2="100" stroke="var(--ink)" stroke-width="1.5"/>
+              <line x1="55" y1="100" x2="97" y2="100" stroke="var(--ink)" stroke-width="1.5"/>
+              <line x1="112" y1="88" x2="112" y2="112" stroke="var(--accent)" stroke-width="2.4"/>
+              <line x1="128" y1="88" x2="128" y2="112" stroke="var(--accent)" stroke-width="2.4"/>
+              <text x="120" y="18" text-anchor="middle" font-size="12" fill="var(--measured)" font-family="Georgia, serif">L</text>
+              <text x="120" y="128" text-anchor="middle" font-size="12" fill="var(--accent)" font-family="Georgia, serif">C</text>
+              <!-- energy ping-pong arrows -->
+              <path d="M100,60 q20,-10 40,0" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" marker-end="url(#lcA)"/>
+              <path d="M140,72 q-20,10 -40,0" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" marker-end="url(#lcA)"/>
+              <defs><marker id="lcA" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--ink-soft)"/></marker></defs>
+              <text x="120" y="94" text-anchor="middle" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">energy trades back and forth</text>
+              <!-- oscillation graph -->
+              <line x1="30" y1="195" x2="215" y2="195" stroke="var(--rule)" stroke-width="1"/>
+              <path d="M30,195 C45,160 60,160 75,195 C90,230 105,230 120,195 C135,160 150,160 165,195 C180,230 195,230 210,195" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+              <path d="M30,195 C45,230 60,230 75,195 C90,160 105,160 120,195 C135,230 150,230 165,195 C180,160 195,160 210,195" fill="none" stroke="var(--measured)" stroke-width="1.3" stroke-dasharray="3 3" opacity="0.85"/>
+              <text x="30" y="213" font-size="8" fill="var(--accent)" font-family="ui-monospace,monospace">Q(t) charge</text>
+              <text x="140" y="213" font-size="8" fill="var(--measured)" font-family="ui-monospace,monospace">I(t) current, 90° out of phase</text>
+              <text x="120" y="228" text-anchor="middle" font-size="9" fill="var(--ink)" font-family="ui-monospace,monospace">ω = 1/√(LC)</text>
+            </svg>
+          </div>
+          <p class="diagram-caption">A capacitor (C) and inductor (L) wired in a loop. Energy sloshes between the capacitor's electric field and the inductor's magnetic field, exactly like a pendulum trading potential and kinetic energy — charge Q(t) and current I(t) oscillate at frequency ω = 1/√(LC), 90° out of phase with each other.</p>
+        </div>
+        <div class="text-panel">
+          <p>An <b>LC oscillator</b> is just two components wired into a loop: a <b>capacitor</b> (two plates, stores energy as an electric field once charge <span class="mono">Q</span> builds up on them) and an <b>inductor</b> (a coil, stores energy as a magnetic field once current <span class="mono">I</span> flows through it). Nothing else — no battery, no resistor. Start it off with some charge on the capacitor and let go.</p>
+          <p>What happens next is the entire point: the charged capacitor pushes current through the inductor, which drains the capacitor but builds up a magnetic field in the coil. That magnetic field then collapses, pushing the current onward and recharging the capacitor with the opposite polarity. Energy keeps handing off between "stored in C" and "stored in L," forever (if nothing resists it) — a clean, single-frequency oscillation.</p>
+          <div class="eq-box">
+            <span class="corner-bl"></span><span class="corner-br"></span>
+            <div class="eq-line">ω = 1 / √(LC)</div>
+            <div class="eq-note">Bigger inductance or bigger capacitance both mean a <i>slower</i> (lower-frequency) oscillation — more "stuff" for the energy to slosh through. This one formula is why chip designers can dial in a qubit's frequency just by drawing bigger or smaller capacitor plates and coils.</div>
+          </div>
+          <p>The mechanical analogy carries over term for term: charge <span class="mono">Q</span> plays the role of a pendulum's <i>position</i>, current <span class="mono">I = dQ/dt</span> plays the role of its <i>velocity</i>, inductance <span class="mono">L</span> plays the role of <i>mass</i> (inertia — it resists changes in current the way mass resists changes in velocity), and <span class="mono">1/C</span> plays the role of the spring's <i>stiffness</i>. Same math, different substance.</p>
+          <div class="callout callout-paper">
+            <span class="label">why this matters here</span>
+            Quantize this circuit — treat charge and current as quantum operators instead of classical numbers, the same move used for a spring — and you get a <b>quantum harmonic oscillator</b>: a ladder of energy levels spaced exactly <span class="mono">ħω</span> apart, all the way up. Evenly spaced. That evenness is precisely the problem Section 0.5 opens with: a bare LC circuit can't be a qubit, because a pulse tuned to the bottom gap drives every gap above it identically. Fixing that with a Josephson junction is the whole story of the transmon.
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="entry" id="sec-qubit-transmon">
-      <div class="entry-head"><span class="entry-tag">0.4</span></div>
+      <div class="entry-head"><span class="entry-tag">0.5</span></div>
       <h2 class="entry-title">How a real qubit is built: the transmon</h2>
       <div class="entry-grid">
         <div>
@@ -328,7 +383,7 @@
     </section>
 
     <section class="entry" id="sec-qubit-tls-link">
-      <div class="entry-head"><span class="entry-tag">0.5</span></div>
+      <div class="entry-head"><span class="entry-tag">0.6</span></div>
       <h2 class="entry-title">Where TLS defects come in — this is your thesis</h2>
       <div class="entry-grid">
         <div>
@@ -371,7 +426,7 @@
     </section>
 
     <section class="entry checklist" id="sec-qubit-check">
-      <div class="entry-head"><span class="entry-tag">0.6</span></div>
+      <div class="entry-head"><span class="entry-tag">0.7</span></div>
       <h2 class="entry-title">Quick self-check — Phase 0</h2>
       <p style="margin-top:-6px; color:var(--ink-soft); font-size:14px;">Lower bar than Phase 1's exit test — this is "can you explain it in conversation," not "can you derive it."</p>
       <ul class="checklist" id="checklist-0">
@@ -382,7 +437,7 @@
         <li><input type="checkbox" id="chk-0e"/><span><b>The one that matters most:</b> can explain, in one breath, why TLS defects limit qubit coherence and why that makes your dataset relevant to building real quantum computers.</span></li>
       </ul>
       <div class="notes-label">
-        <span>Your own one-paragraph version of <a href="#sec-qubit-tls-link" class="sym-link">0.5</a></span>
+        <span>Your own one-paragraph version of <a href="#sec-qubit-tls-link" class="sym-link">0.6</a></span>
         <span class="saved-flag mono" id="saved-flag-0">saved</span>
       </div>
       <textarea class="notes-field" id="notes-0" placeholder="Write the TLS-to-quantum-computing connection in your own words — this is the elevator-pitch paragraph you'll actually say out loud."></textarea>
@@ -475,7 +530,7 @@
         </div>
         <div class="text-panel">
           <p>With no drive and no decay, the only physics is the energy splitting between <span class="mono">|g⟩</span> and <span class="mono">|e⟩</span>. That's all <a href="#note-hamiltonian" class="mono sym-link">H = ω σz/2</a> says: <span class="mono">|e⟩</span> sits at energy <span class="mono">+ω/2</span>, <span class="mono">|g⟩</span> at <span class="mono">−ω/2</span> (units where <a href="#note-hbar" class="mono sym-link">ħ=1</a>, which your code uses throughout).</p>
-          <p>Left alone, a state just accumulates phase between the poles — it doesn't move on the Bloch sphere in any way you'd notice in population. The interesting dynamics start the moment you add a drive term, which is Section 1.3.</p>
+          <p>Left alone, a state just accumulates phase between the poles — it doesn't move on the <a href="#note-bloch-sphere" class="sym-link">Bloch sphere</a> in any way you'd notice in population. The interesting dynamics start the moment you add a drive term, which is Section 1.3.</p>
           <div class="callout callout-code">
             <span class="label">in your code</span>
             <code>H_tls = Σ ωⱼ σzⱼ/2</code> — for N=1 this is just one term. <span class="mono">init_freqs[0]</span> is ω for TLS 0.
@@ -820,9 +875,10 @@
       <a href="#sec-qubit-what" role="menuitem"><span class="snav-num">0.1</span>What is a qubit</a>
       <a href="#sec-qubit-power" role="menuitem"><span class="snav-num">0.2</span>Why superposition is powerful</a>
       <a href="#sec-qubit-apps" role="menuitem"><span class="snav-num">0.3</span>Applications</a>
-      <a href="#sec-qubit-transmon" role="menuitem"><span class="snav-num">0.4</span>The transmon</a>
-      <a href="#sec-qubit-tls-link" role="menuitem"><span class="snav-num">0.5</span>The TLS connection</a>
-      <a href="#sec-qubit-check" role="menuitem"><span class="snav-num">0.6</span>Self-check</a>
+      <a href="#sec-lc-oscillator" role="menuitem"><span class="snav-num">0.4</span>The LC oscillator</a>
+      <a href="#sec-qubit-transmon" role="menuitem"><span class="snav-num">0.5</span>The transmon</a>
+      <a href="#sec-qubit-tls-link" role="menuitem"><span class="snav-num">0.6</span>The TLS connection</a>
+      <a href="#sec-qubit-check" role="menuitem"><span class="snav-num">0.7</span>Self-check</a>
 
       <div class="snav-group-title">Phase 1 — Two-Level System</div>
       <a href="#sec-hilbert" role="menuitem"><span class="snav-num">1.1</span>Two states, one sphere</a>
