@@ -58,10 +58,14 @@
     });
   });
 
-  // ---- back-to-where-you-were: works for every internal #link on the page ----
+  // ---- back-to-where-you-were: in-page #jumps, falling back to the page you actually arrived from ----
   var navStack = [];
   var backLink = document.getElementById('back-link');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var referrer = document.referrer;
+  var hasUsableReferrer = !!referrer && referrer !== location.href;
+
+  if (hasUsableReferrer) backLink.classList.add('show');
 
   document.addEventListener('click', function(e){
     var link = e.target.closest('a[href^="#"]');
@@ -75,9 +79,14 @@
   backLink.addEventListener('click', function(e){
     e.preventDefault();
     var pos = navStack.pop();
-    if (pos === undefined) { backLink.classList.remove('show'); return; }
-    window.scrollTo({ top: pos, behavior: reduceMotion ? 'auto' : 'smooth' });
-    if (navStack.length === 0) backLink.classList.remove('show');
+    if (pos !== undefined) {
+      window.scrollTo({ top: pos, behavior: reduceMotion ? 'auto' : 'smooth' });
+      if (navStack.length === 0 && !hasUsableReferrer) backLink.classList.remove('show');
+      return;
+    }
+    // No in-page jump to undo — go back to whichever page linked here (works cross-page, e.g. lectures/index.html → a lecture note, or phy/index.html → papers/*.html).
+    if (hasUsableReferrer) { window.location.href = referrer; return; }
+    backLink.classList.remove('show');
   });
 
   // ---- section quick-nav popup ----
