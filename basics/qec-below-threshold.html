@@ -53,6 +53,8 @@
           <table class="notation-table">
             <thead><tr><th>Term</th><th>One-line meaning</th></tr></thead>
             <tbody>
+              <tr><td class="sym">Gate</td><td class="say">An operation that rotates a qubit's state to a new one — not arithmetic, a rotation.</td></tr>
+              <tr><td class="sym">Superposition</td><td class="say">A qubit sitting partly-0-partly-1 at once, described by exactly 2 numbers.</td></tr>
               <tr><td class="sym">Physical qubit</td><td class="say">One real, noisy piece of hardware holding one quantum bit.</td></tr>
               <tr><td class="sym">Logical qubit</td><td class="say">Many physical qubits wired together to act as one well-protected qubit.</td></tr>
               <tr><td class="sym">Code distance (d)</td><td class="say">How many simultaneous errors it takes to fool the code undetected. Bigger d = safer.</td></tr>
@@ -68,6 +70,130 @@
             </tbody>
           </table>
         </div>
+
+        <details class="term-item">
+          <summary><span>What a gate actually is (a rotation, not arithmetic)</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+                    <text x="110" y="14" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">qubit state as a clock hand</text>
+                    <circle cx="110" cy="115" r="80" fill="none" stroke="var(--rule)" stroke-width="1.4"/>
+                    <circle cx="110" cy="115" r="2.5" fill="var(--ink)"/>
+                    <text x="110" y="30" text-anchor="middle" font-size="11" fill="var(--ink)" font-family="Georgia,serif">0</text>
+                    <text x="110" y="205" text-anchor="middle" font-size="11" fill="var(--ink)" font-family="Georgia,serif">1</text>
+                    <line x1="110" y1="115" x2="110" y2="42" stroke="var(--ink-soft)" stroke-width="1.6" stroke-dasharray="3 3" marker-end="url(#gArrStart)"/>
+                    <defs><marker id="gArrStart" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--ink-soft)"/></marker></defs>
+                    <text x="60" y="70" font-size="8.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">start: 0</text>
+                    <path d="M110,42 A73,73 0 0,1 166,68" fill="none" stroke="var(--good)" stroke-width="1.3" stroke-dasharray="2 2"/>
+                    <text x="150" y="50" font-size="8.5" fill="var(--good)" font-family="ui-monospace,monospace">rotate 90°</text>
+                    <line x1="110" y1="115" x2="166" y2="68" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#gArrEnd)"/>
+                    <defs><marker id="gArrEnd" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--accent)"/></marker></defs>
+                    <text x="172" y="64" font-size="9" fill="var(--accent)" font-family="ui-monospace,monospace">after Hadamard</text>
+                    <text x="110" y="192" text-anchor="middle" font-size="8" fill="var(--accent)" font-family="ui-monospace,monospace">50/50 superposition</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">A gate spins the "arrow" to a new direction. It never adds or subtracts a number the way +,&minus;,&divide; would.</p>
+              </div>
+              <div class="text-panel">
+                <p>A qubit's state isn't a number — picture it as an <b>arrow</b> (like a clock hand) that can point anywhere between "0" (straight up) and "1" (straight down), or anywhere in between. A <b>gate</b> is an operation that <b>rotates</b> that arrow to a new direction. It's linear algebra (a matrix multiplying a vector), not arithmetic on the value 0 or 1.</p>
+                <p>Example: the <b>Hadamard gate</b> takes an arrow that starts pointing exactly at "0" and rotates it 90°, landing it exactly halfway between 0 and 1 — an equal superposition. No amount of <span class="mono">+</span>, <span class="mono">&minus;</span>, or <span class="mono">/</span> on the number "0" could ever produce "half 0, half 1"; a rotation can, because the state was never really "just a number" to begin with.</p>
+                <div class="callout callout-paper">
+                  <span class="label">entangling gates, revisited</span>
+                  A two-qubit <b>entangling gate</b> (like CZ, used throughout this paper's circuit) is the same idea scaled up: it rotates the <i>combined</i> arrow of two qubits together, in a way that afterward can no longer be split back into "qubit A's arrow" and "qubit B's arrow" separately.
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>How many numbers does a superposition need?</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+                    <text x="130" y="14" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">numbers needed to describe n qubits together</text>
+                    <line x1="35" y1="175" x2="250" y2="175" stroke="var(--ink)" stroke-width="1.3"/>
+                    <rect x="45" y="155" width="30" height="20" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+                    <text x="60" y="148" text-anchor="middle" font-size="8.5" fill="var(--accent)" font-family="ui-monospace,monospace">2</text>
+                    <text x="60" y="188" text-anchor="middle" font-size="8" fill="var(--ink)" font-family="ui-monospace,monospace">1 qubit</text>
+                    <rect x="100" y="135" width="30" height="40" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+                    <text x="115" y="128" text-anchor="middle" font-size="8.5" fill="var(--accent)" font-family="ui-monospace,monospace">4</text>
+                    <text x="115" y="188" text-anchor="middle" font-size="8" fill="var(--ink)" font-family="ui-monospace,monospace">2 qubits</text>
+                    <rect x="155" y="95" width="30" height="80" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="1.4"/>
+                    <text x="170" y="88" text-anchor="middle" font-size="8.5" fill="var(--measured)" font-family="ui-monospace,monospace">8</text>
+                    <text x="170" y="188" text-anchor="middle" font-size="8" fill="var(--ink)" font-family="ui-monospace,monospace">3 qubits</text>
+                    <rect x="210" y="35" width="30" height="140" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="1.4"/>
+                    <text x="225" y="28" text-anchor="middle" font-size="8.5" fill="var(--measured)" font-family="ui-monospace,monospace">16</text>
+                    <text x="225" y="188" text-anchor="middle" font-size="8" fill="var(--ink)" font-family="ui-monospace,monospace">4 qubits</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">Each bar doubles: n qubits jointly need 2ⁿ numbers, not more numbers for one qubit alone.</p>
+              </div>
+              <div class="text-panel">
+                <p>A <b>single</b> qubit's superposition always takes exactly <b>2 numbers</b> — "how much 0," "how much 1" — no matter how fine-grained the in-between state is. There are only two basis states to mix, so there are only ever two amounts to specify.</p>
+                <p>What actually grows is the <b>joint</b> description of <i>many</i> qubits together: 2 qubits need <span class="mono">2²=4</span> numbers (one for each combination 00, 01, 10, 11); 3 qubits need <span class="mono">2³=8</span>; n qubits need <span class="mono">2ⁿ</span>. That's exponential, not linear.</p>
+                <div class="callout callout-code">
+                  <span class="label">why this is the actual point of quantum computing</span>
+                  This 2ⁿ joint space is why simulating a quantum computer on a classical one becomes hopeless past a few dozen qubits — by a few hundred qubits, 2ⁿ exceeds the number of atoms in the observable universe. <b>Entangling gates</b> are exactly what make those 2ⁿ numbers impossible to split back into separate per-qubit numbers — which is why entanglement, not superposition alone, is the resource quantum algorithms actually exploit.
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>Interference: how a quantum algorithm "knows" the right answer</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 260 210" xmlns="http://www.w3.org/2000/svg">
+                    <text x="130" y="14" text-anchor="middle" font-size="9" fill="var(--ink-soft)" font-family="ui-monospace,monospace">Hadamard, then Hadamard again</text>
+                    <line x1="20" y1="140" x2="240" y2="140" stroke="var(--rule)" stroke-width="1.2"/>
+                    <text x="70" y="188" text-anchor="middle" font-size="9" fill="var(--ink)" font-family="ui-monospace,monospace">final |0⟩</text>
+                    <rect x="45" y="100" width="16" height="40" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+                    <text x="53" y="94" text-anchor="middle" font-size="8" fill="var(--accent)" font-family="ui-monospace,monospace">+½</text>
+                    <rect x="66" y="100" width="16" height="40" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+                    <text x="74" y="94" text-anchor="middle" font-size="8" fill="var(--accent)" font-family="ui-monospace,monospace">+½</text>
+                    <text x="92" y="124" font-size="11" fill="var(--ink-soft)">=</text>
+                    <rect x="102" y="60" width="20" height="80" fill="var(--good-soft)" stroke="var(--good)" stroke-width="1.6"/>
+                    <text x="112" y="53" text-anchor="middle" font-size="8.5" fill="var(--good)" font-family="ui-monospace,monospace">1</text>
+                    <text x="112" y="160" text-anchor="middle" font-size="8" fill="var(--good)" font-family="ui-monospace,monospace">reinforced</text>
+
+                    <text x="195" y="188" text-anchor="middle" font-size="9" fill="var(--ink)" font-family="ui-monospace,monospace">final |1⟩</text>
+                    <rect x="170" y="100" width="16" height="40" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+                    <text x="178" y="94" text-anchor="middle" font-size="8" fill="var(--accent)" font-family="ui-monospace,monospace">+½</text>
+                    <rect x="191" y="140" width="16" height="40" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="1.4"/>
+                    <text x="199" y="188" text-anchor="middle" font-size="8" fill="var(--measured)" font-family="ui-monospace,monospace">&minus;½</text>
+                    <text x="217" y="124" font-size="11" fill="var(--ink-soft)">=</text>
+                    <circle cx="230" cy="140" r="3.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.6"/>
+                    <text x="230" y="120" text-anchor="middle" font-size="8.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">0</text>
+                    <text x="230" y="160" text-anchor="middle" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">cancelled</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">Both paths agree on |0⟩ (+½ and +½ add up) but disagree on |1⟩ (+½ and &minus;½ cancel exactly) — real arithmetic, not a metaphor.</p>
+              </div>
+              <div class="text-panel">
+                <p>The obvious next assumption — "superposition explores 8 states at once, so it computes all 8 answers for free" — is the most common misconception about quantum computing, and it's wrong. The moment you <b>measure</b>, the superposition collapses to exactly <i>one</i> random outcome. Left alone, that's no better than guessing.</p>
+                <p>The actual power is <b>interference</b>. Amplitudes aren't just "how much" — they carry a sign (more generally, a complex phase), so two contributions to the same outcome can reinforce or cancel. A concrete, checkable example: apply the Hadamard gate to <span class="mono">|0⟩</span> <i>twice</i>. Hadamard sends <span class="mono">|0⟩&rarr;+½|0⟩+½|1⟩</span> but sends <span class="mono">|1⟩&rarr;+½|0⟩&minus;½|1⟩</span> (note the minus sign). Tracking both contributions to each final outcome:</p>
+                <div class="eq-box">
+                  <span class="corner-bl"></span><span class="corner-br"></span>
+                  <div class="eq-line">final |0⟩:  +½ + ½ = 1   (reinforced)</div>
+                  <div class="eq-line">final |1⟩:  +½ &minus; ½ = 0   (cancelled, exactly)</div>
+                  <div class="eq-note">Measuring now gives |0⟩ with 100% certainty — despite a genuine 50/50 blur in the middle of the computation. Nothing random survives; it was cancelled by the arithmetic, not luck.</div>
+                </div>
+                <div class="callout callout-paper">
+                  <span class="label">so how do you "know" the right answer?</span>
+                  You don't, in advance. You engineer the gate sequence so the <i>wrong</i> answers land in the "cancels to 0" row, like |1⟩ above, while the right answer lands in the "reinforces" row, like |0⟩. Whatever has nonzero probability left when you measure <i>is</i> the answer — not because it was found, but because everything else was forced to zero first. Designing that routing for a genuinely useful problem (this toy example just cancels back to the input) is the real research challenge — it's why only a handful of algorithms have a known quantum speedup, not everything.
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
 
         <details class="term-item">
           <summary><span>Physical qubit &rarr; logical qubit</span><span class="term-chevron">&rsaquo;</span></summary>
