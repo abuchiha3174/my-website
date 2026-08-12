@@ -41,32 +41,36 @@
     backLink.classList.remove('show');
   });
 
-  // ---- section quick-nav popup ----
+  // ---- section quick-nav popup (only present on some pages) ----
   var sectionNav = document.getElementById('section-nav');
   var sectionNavToggle = document.getElementById('section-nav-toggle');
 
-  function closeSectionNav() {
-    sectionNav.classList.remove('open');
-    sectionNavToggle.setAttribute('aria-expanded', 'false');
-  }
-  function openSectionNav() {
-    sectionNav.classList.add('open');
-    sectionNavToggle.setAttribute('aria-expanded', 'true');
-  }
+  if (sectionNav && sectionNavToggle) {
+    function closeSectionNav() {
+      sectionNav.classList.remove('open');
+      sectionNavToggle.setAttribute('aria-expanded', 'false');
+    }
+    function openSectionNav() {
+      sectionNav.classList.add('open');
+      sectionNavToggle.setAttribute('aria-expanded', 'true');
+    }
 
-  sectionNavToggle.addEventListener('click', function(e){
-    e.stopPropagation();
-    if (sectionNav.classList.contains('open')) closeSectionNav(); else openSectionNav();
-  });
-  sectionNav.querySelectorAll('.section-nav-menu a').forEach(function(a){
-    a.addEventListener('click', closeSectionNav);
-  });
-  document.getElementById('section-nav-close').addEventListener('click', closeSectionNav);
-  document.getElementById('section-nav-backdrop').addEventListener('click', closeSectionNav);
-  document.addEventListener('click', function(e){
-    if (sectionNav.classList.contains('open') && !sectionNav.contains(e.target)) closeSectionNav();
-  });
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape') closeSectionNav();
-  });
+    sectionNavToggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (sectionNav.classList.contains('open')) closeSectionNav(); else openSectionNav();
+    });
+    sectionNav.querySelectorAll('.section-nav-menu a').forEach(function(a){
+      a.addEventListener('click', closeSectionNav);
+    });
+    var navClose = document.getElementById('section-nav-close');
+    var navBackdrop = document.getElementById('section-nav-backdrop');
+    if (navClose) navClose.addEventListener('click', closeSectionNav);
+    if (navBackdrop) navBackdrop.addEventListener('click', closeSectionNav);
+    document.addEventListener('click', function(e){
+      if (sectionNav.classList.contains('open') && !sectionNav.contains(e.target)) closeSectionNav();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeSectionNav();
+    });
+  }
 })();

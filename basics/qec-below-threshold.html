@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Quantum error correction below the surface code threshold — Basics</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="page">
+
+  <header class="notebook-header">
+    <div class="nav-row">
+      <span class="eyebrow">Physics gap · basics</span>
+      <a class="home-btn" href="../phy/index.html">🏠 Home</a>
+    </div>
+    <h1 class="title serif">Quantum error correction below the surface code threshold</h1>
+    <p class="paper-meta-block">
+      <b>Authors:</b> Google Quantum AI and Collaborators<br>
+      <b>Source:</b> <a href="https://arxiv.org/abs/2408.13687" target="_blank" rel="noopener">arXiv:2408.13687</a> — dated August 24, 2024
+    </p>
+    <blockquote class="abstract">
+      <span class="abs-label">Summary (paraphrased, not verbatim)</span>
+      Quantum error correction only helps if the underlying hardware error rate sits below a critical
+      threshold — above it, adding more physical qubits per logical qubit makes things worse, not better.
+      This paper runs two real superconducting-qubit surface-code memories (distance-5 and distance-7) and
+      shows, directly and measurably, that the hardware is finally operating below that threshold: logical
+      error drops by a factor of 2.14 when the distance goes up by two, the distance-7 logical qubit
+      outlives its best constituent physical qubit by 2.4×, and the whole thing is decoded live rather than
+      after the fact. A separate stress test at much higher distance (29) then finds the next obstacle:
+      rare, correlated error bursts hitting many qubits at once, roughly once an hour.
+    </blockquote>
+    <div class="crosslink"><a href="index.html">&larr; All papers</a></div>
+  </header>
+
+  <main>
+
+    <!-- ============ TERMINOLOGIES ============ -->
+    <details class="accordion-item" id="acc-terms" open>
+      <summary>
+        <div class="acc-summary-text">
+          <span class="acc-title">1. Terminologies</span>
+          <span class="acc-sub">Every term the abstract leans on — click any one to expand it, click again to collapse.</span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </summary>
+      <div class="accordion-body">
+
+        <p class="notation-intro">Quick-reference table first, then each term gets its own expandable card with a diagram. Use the table as a lookup while reading; expand a card when you want the full picture.</p>
+        <div class="table-scroll" style="margin-bottom:20px;">
+          <table class="notation-table">
+            <thead><tr><th>Term</th><th>One-line meaning</th></tr></thead>
+            <tbody>
+              <tr><td class="sym">Physical qubit</td><td class="say">One real, noisy piece of hardware holding one quantum bit.</td></tr>
+              <tr><td class="sym">Logical qubit</td><td class="say">Many physical qubits wired together to act as one well-protected qubit.</td></tr>
+              <tr><td class="sym">Code distance (d)</td><td class="say">How many simultaneous errors it takes to fool the code undetected. Bigger d = safer.</td></tr>
+              <tr><td class="sym">Physical qubits / logical qubit</td><td class="say">Roughly d² for a surface code — the hardware cost of a given distance.</td></tr>
+              <tr><td class="sym">Physical error rate (p)</td><td class="say">How often one physical qubit / gate messes up. A raw hardware number.</td></tr>
+              <tr><td class="sym">Logical error rate (ε_d)</td><td class="say">How often the whole error-corrected logical qubit ends up wrong.</td></tr>
+              <tr><td class="sym">Critical threshold (p_thr)</td><td class="say">The break-even point: below it, bigger d helps; above it, bigger d hurts.</td></tr>
+              <tr><td class="sym">Surface code</td><td class="say">A specific 2D grid layout for building a logical qubit, using only nearest-neighbor wiring.</td></tr>
+              <tr><td class="sym">Transmon</td><td class="say">The superconducting-circuit "artificial atom" used as the physical qubit here.</td></tr>
+              <tr><td class="sym">Quantum memory</td><td class="say">The simplest QEC test: hold a logical qubit's value, correct it repeatedly, check it survived.</td></tr>
+              <tr><td class="sym">Real-time decoder</td><td class="say">Classical algorithm that infers and corrects errors live, fast enough to keep pace with the hardware.</td></tr>
+              <tr><td class="sym">Syndrome measurement</td><td class="say">A local check that reveals where an error-like inconsistency showed up, without reading the encoded data.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <details class="term-item">
+          <summary><span>Physical qubit &rarr; logical qubit</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 260 210" xmlns="http://www.w3.org/2000/svg">
+                    <text x="130" y="16" text-anchor="middle" font-size="10" fill="var(--ink-soft)" font-family="ui-monospace,monospace">5 physical qubits, one flipped</text>
+                    <g font-family="ui-monospace,monospace" font-size="9" fill="var(--ink-soft)">
+                      <circle cx="30" cy="50" r="13" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+                      <text x="30" y="53" text-anchor="middle" fill="var(--ink)">0</text>
+                      <circle cx="75" cy="50" r="13" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+                      <text x="75" y="53" text-anchor="middle" fill="var(--ink)">0</text>
+                      <circle cx="120" cy="50" r="13" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="2"/>
+                      <text x="120" y="53" text-anchor="middle" fill="var(--measured)">1</text>
+                      <circle cx="165" cy="50" r="13" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+                      <text x="165" y="53" text-anchor="middle" fill="var(--ink)">0</text>
+                      <circle cx="210" cy="50" r="13" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+                      <text x="210" y="53" text-anchor="middle" fill="var(--ink)">0</text>
+                    </g>
+                    <text x="120" y="76" text-anchor="middle" font-size="8.5" fill="var(--measured)" font-family="ui-monospace,monospace">1 error, outvoted 4-to-1</text>
+                    <line x1="120" y1="85" x2="120" y2="108" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#arr1)"/>
+                    <defs><marker id="arr1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--ink-soft)"/></marker></defs>
+                    <rect x="55" y="110" width="130" height="26" rx="6" fill="var(--paper)" stroke="var(--rule)" stroke-width="1.3"/>
+                    <text x="120" y="127" text-anchor="middle" font-size="10" fill="var(--ink)" font-family="ui-monospace,monospace">majority vote / decoder</text>
+                    <line x1="120" y1="136" x2="120" y2="159" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#arr2)"/>
+                    <defs><marker id="arr2" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--ink-soft)"/></marker></defs>
+                    <circle cx="120" cy="180" r="17" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.2"/>
+                    <text x="120" y="184" text-anchor="middle" font-size="11" fill="var(--accent)" font-family="ui-monospace,monospace">0</text>
+                    <text x="120" y="205" text-anchor="middle" font-size="9" fill="var(--accent)" font-family="ui-monospace,monospace">logical qubit — still correct</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">The classical version: repeat a bit 5 times and vote. Any single flip gets outvoted. Surface codes do the quantum-mechanical equivalent of this, in 2D.</p>
+              </div>
+              <div class="text-panel">
+                <p>A <b>physical qubit</b> is one real, physical piece of hardware — a superconducting circuit, an ion, anything that holds one quantum bit. It's fragile: heat, stray photons, and control imperfections randomly corrupt it.</p>
+                <p>A <b>logical qubit</b> is not a new kind of hardware — it's <i>many</i> physical qubits, wired together so that if a few of them get corrupted, the group as a whole can detect and fix it, without ever directly measuring (and thereby destroying) the quantum information being protected.</p>
+                <div class="callout callout-paper">
+                  <span class="label">why this can't just be "measure and check"</span>
+                  In classical computing you can freely read a bit to check it. In quantum computing, directly measuring a qubit collapses its state — you'd destroy the very information you're trying to protect. Surface codes are built around syndrome measurements specifically to get around this: they reveal where something went wrong without revealing what the encoded value actually is.
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>Code distance: how many errors it takes to fool the code</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 260 190" xmlns="http://www.w3.org/2000/svg">
+                    <text x="130" y="14" text-anchor="middle" font-size="10" fill="var(--ink-soft)" font-family="ui-monospace,monospace">distance 3 vs. distance 5</text>
+                    <text x="10" y="45" font-size="10" fill="var(--ink)" font-family="ui-monospace,monospace">d=3</text>
+                    <g font-family="ui-monospace,monospace" font-size="8">
+                      <circle cx="70" cy="42" r="11" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+                      <circle cx="105" cy="42" r="11" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="2"/>
+                      <circle cx="140" cy="42" r="11" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="2"/>
+                    </g>
+                    <text x="240" y="45" text-anchor="end" font-size="9" fill="var(--measured)" font-family="ui-monospace,monospace">2 flips break it</text>
+                    <text x="10" y="105" font-size="10" fill="var(--ink)" font-family="ui-monospace,monospace">d=5</text>
+                    <g font-family="ui-monospace,monospace" font-size="8">
+                      <circle cx="70" cy="102" r="11" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+                      <circle cx="97" cy="102" r="11" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+                      <circle cx="124" cy="102" r="11" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="2"/>
+                      <circle cx="151" cy="102" r="11" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="2"/>
+                      <circle cx="178" cy="102" r="11" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="2"/>
+                    </g>
+                    <text x="240" y="105" text-anchor="end" font-size="9" fill="var(--measured)" font-family="ui-monospace,monospace">3 flips break it</text>
+                    <text x="130" y="150" text-anchor="middle" font-size="9" fill="var(--good)" font-family="ui-monospace,monospace">bigger d → more simultaneous</text>
+                    <text x="130" y="163" text-anchor="middle" font-size="9" fill="var(--good)" font-family="ui-monospace,monospace">errors needed to sneak past</text>
+                    <text x="130" y="182" text-anchor="middle" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">surface code: ~d² physical qubits needed for distance d</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">More qubits per logical qubit buys a bigger margin — but that margin only pays off below the critical threshold.</p>
+              </div>
+              <div class="text-panel">
+                <p><b>Code distance (d)</b> is, roughly, the minimum number of physical errors that would have to land simultaneously, in exactly the wrong pattern, before the code is fooled into an undetected wrong answer. Higher d means more errors are needed to slip through — a bigger safety margin.</p>
+                <p>Concretely: think of the two valid logical answers as <span class="mono">00000</span> and <span class="mono">11111</span>. They differ in all 5 positions, so the distance is 5 — you'd need all 5 bits to flip together to silently jump from one valid answer to the other. Fewer flips just produce an obviously broken in-between pattern that gets caught.</p>
+                <p><b>Physical qubits per logical qubit</b> is the price of that margin. A surface code's qubit count scales roughly as <span class="mono">d²</span> (it's a 2D grid, not a 1D line) — a distance-5 code needs on the order of 49 physical qubits, a distance-7 code around 101 (the exact number this paper uses).</p>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>Physical vs. logical error rate, and the critical threshold</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="35" y1="20" x2="35" y2="190" stroke="var(--ink)" stroke-width="1.4"/>
+                    <line x1="35" y1="190" x2="240" y2="190" stroke="var(--ink)" stroke-width="1.4"/>
+                    <text x="20" y="18" font-size="9" fill="var(--ink-soft)" font-family="ui-monospace,monospace">ε_d</text>
+                    <text x="240" y="203" text-anchor="end" font-size="9" fill="var(--ink-soft)" font-family="ui-monospace,monospace">code distance d →</text>
+                    <line x1="35" y1="105" x2="240" y2="105" stroke="var(--rule)" stroke-width="1.2" stroke-dasharray="3 3"/>
+                    <text x="243" y="108" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">p = p_thr</text>
+                    <path d="M45,150 C90,90 150,45 235,25" fill="none" stroke="var(--good)" stroke-width="2.2"/>
+                    <text x="238" y="24" font-size="8.5" fill="var(--good)" font-family="ui-monospace,monospace" text-anchor="end">p &gt; p_thr — grows ✗</text>
+                    <path d="M45,80 C90,120 150,155 235,178" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+                    <text x="238" y="188" font-size="8.5" fill="var(--accent)" font-family="ui-monospace,monospace" text-anchor="end">p &lt; p_thr — shrinks ✓</text>
+                    <circle cx="45" cy="105" r="4" fill="var(--ink)"/>
+                    <text x="50" y="102" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">both start equal, here</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">The single most important plot in the field: whether the curve bends up or down as d grows is decided entirely by which side of p_thr you're on.</p>
+              </div>
+              <div class="text-panel">
+                <p><b>Physical error rate (p)</b> — how often one physical qubit or gate operation messes up. A raw hardware property.</p>
+                <p><b>Logical error rate (ε_d)</b> — how often the whole error-corrected logical qubit ends up wrong, after the correction machinery has done its best.</p>
+                <div class="callout callout-code">
+                  <span class="label">the pivot the whole field balances on</span>
+                  <b>Critical threshold (p_thr):</b> a break-even physical error rate.
+                  <ul style="margin:6px 0 0; padding-left:18px;">
+                    <li><b>p &lt; p_thr</b> (below threshold): increasing d makes ε_d go <i>down</i>, exponentially.</li>
+                    <li><b>p &gt; p_thr</b> (above threshold): increasing d makes ε_d go <i>up</i>.</li>
+                  </ul>
+                </div>
+                <p>This is why "below threshold" is the paper's central claim, not a footnote. The relation is approximately <span class="mono">ε_d ∝ (p / p_thr)^((d+1)/2)</span>, and <span class="mono">Λ = ε_d / ε_{d+2} ≈ p_thr / p</span> is the direct, measurable signature.</p>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>The surface code: a 2D grid of checks</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                    <g stroke="var(--rule)" stroke-width="1">
+                      <line x1="40" y1="40" x2="200" y2="40"/><line x1="40" y1="80" x2="200" y2="80"/>
+                      <line x1="40" y1="120" x2="200" y2="120"/><line x1="40" y1="160" x2="200" y2="160"/><line x1="40" y1="200" x2="200" y2="200"/>
+                      <line x1="40" y1="40" x2="40" y2="200"/><line x1="80" y1="40" x2="80" y2="200"/>
+                      <line x1="120" y1="40" x2="120" y2="200"/><line x1="160" y1="40" x2="160" y2="200"/><line x1="200" y1="40" x2="200" y2="200"/>
+                    </g>
+                    <rect x="78" y="78" width="44" height="44" fill="none" stroke="var(--accent)" stroke-width="2.4" rx="4"/>
+                    <g fill="var(--ink)">
+                      <circle cx="40" cy="40" r="6"/><circle cx="80" cy="40" r="6"/><circle cx="120" cy="40" r="6"/><circle cx="160" cy="40" r="6"/><circle cx="200" cy="40" r="6"/>
+                      <circle cx="40" cy="80" r="6"/><circle cx="120" cy="80" r="6"/><circle cx="200" cy="80" r="6"/>
+                      <circle cx="40" cy="120" r="6"/><circle cx="200" cy="120" r="6"/>
+                      <circle cx="40" cy="160" r="6"/><circle cx="120" cy="160" r="6"/><circle cx="200" cy="160" r="6"/>
+                      <circle cx="40" cy="200" r="6"/><circle cx="80" cy="200" r="6"/><circle cx="120" cy="200" r="6"/><circle cx="160" cy="200" r="6"/><circle cx="200" cy="200" r="6"/>
+                    </g>
+                    <g fill="var(--measured)">
+                      <rect x="76" y="76" width="8" height="8"/><rect x="116" y="76" width="8" height="8"/>
+                      <rect x="76" y="116" width="8" height="8"/><rect x="116" y="116" width="8" height="8"/>
+                    </g>
+                    <circle cx="80" cy="80" r="6" fill="var(--accent)"/><circle cx="120" cy="80" r="6" fill="var(--accent)"/>
+                    <circle cx="80" cy="120" r="6" fill="var(--accent)"/><circle cx="120" cy="120" r="6" fill="var(--accent)"/>
+                    <text x="120" y="222" text-anchor="middle" font-size="8.5" fill="var(--ink)" font-family="ui-monospace,monospace">● data qubit</text>
+                    <text x="120" y="234" text-anchor="middle" font-size="8.5" fill="var(--measured)" font-family="ui-monospace,monospace">■ measurement (ancilla) qubit</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">One stabilizer highlighted (blue box): 4 data qubits, checked by neighboring ancilla qubits, without ever reading the data qubits' actual value.</p>
+              </div>
+              <div class="text-panel">
+                <p>The <b>surface code</b> is a specific 2D layout for turning many physical qubits into one logical qubit. Picture a checkerboard grid: some qubits ("data qubits") hold the actual quantum information; interspersed "measurement" or "ancilla" qubits repeatedly run local checks called <b>stabilizers</b> against their neighbors.</p>
+                <p>Each stabilizer check reveals whether an error occurred nearby — without revealing (and thus destroying) what the data qubits actually encode. It's the leading candidate for superconducting hardware precisely because every check only needs <i>nearest-neighbor</i> connections — which is how these chips are physically wired.</p>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>Transmon hardware, and what a "memory" experiment tests</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 220 190" xmlns="http://www.w3.org/2000/svg">
+                    <text x="110" y="14" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">transmon: energy ladder</text>
+                    <line x1="40" y1="150" x2="180" y2="150" stroke="var(--good)" stroke-width="3"/>
+                    <text x="185" y="153" font-size="10" fill="var(--good)" font-family="Georgia,serif">|0⟩</text>
+                    <line x1="40" y1="105" x2="180" y2="105" stroke="var(--good)" stroke-width="3"/>
+                    <text x="185" y="108" font-size="10" fill="var(--good)" font-family="Georgia,serif">|1⟩</text>
+                    <line x1="40" y1="65" x2="180" y2="65" stroke="var(--ink-soft)" stroke-width="2.4" opacity="0.55"/>
+                    <text x="185" y="68" font-size="9.5" fill="var(--ink-soft)" font-family="Georgia,serif" opacity="0.75">|2⟩ (unused)</text>
+                    <line x1="40" y1="30" x2="180" y2="30" stroke="var(--ink-soft)" stroke-width="2" opacity="0.35"/>
+                    <text x="185" y="33" font-size="9" fill="var(--ink-soft)" font-family="Georgia,serif" opacity="0.55">|3⟩</text>
+                    <line x1="70" y1="147" x2="70" y2="108" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#tArr)"/>
+                    <defs><marker id="tArr" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--accent)"/></marker></defs>
+                    <text x="76" y="128" font-size="8" fill="var(--accent)" font-family="ui-monospace,monospace">microwave drive</text>
+                    <text x="110" y="178" text-anchor="middle" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">unevenly spaced levels ⇒ only |0⟩,|1⟩ addressed</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">A transmon is a superconducting circuit engineered so its two lowest energy levels act as a clean, addressable |0⟩/|1⟩ qubit.</p>
+              </div>
+              <div class="text-panel">
+                <p>A <b>transmon</b> is the physical-qubit hardware used here: a superconducting circuit (Josephson junctions + capacitors), cooled to near absolute zero, engineered so its two lowest energy levels behave like an artificial atom's 0 and 1.</p>
+                <p>A <b>quantum memory</b> experiment is the simplest possible QEC benchmark: encode a logical qubit's value, hold it through repeated error-correction cycles, then check whether the right value survived.</p>
+                <div class="flow-chain">
+                  <div class="flow-node emph">encode</div><span class="flow-arrow">→</span>
+                  <div class="flow-node">cycle</div><span class="flow-arrow">→</span>
+                  <div class="flow-node">cycle</div><span class="flow-arrow">→</span>
+                  <div class="flow-node">…</div><span class="flow-arrow">→</span>
+                  <div class="flow-node emph">readout &amp; check</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>Comparing distance-5 and distance-7: Λ and "beyond break-even"</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
+                    <text x="110" y="14" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">logical error rate, ε_d</text>
+                    <line x1="40" y1="170" x2="200" y2="170" stroke="var(--ink)" stroke-width="1.3"/>
+                    <rect x="55" y="60" width="40" height="110" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="1.6"/>
+                    <text x="75" y="52" text-anchor="middle" font-size="9" fill="var(--measured)" font-family="ui-monospace,monospace">ε₅</text>
+                    <text x="75" y="184" text-anchor="middle" font-size="9" fill="var(--ink)" font-family="ui-monospace,monospace">d=5</text>
+                    <rect x="140" y="118" width="40" height="52" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="160" y="110" text-anchor="middle" font-size="9" fill="var(--accent)" font-family="ui-monospace,monospace">ε₇ = 0.143%</text>
+                    <text x="160" y="184" text-anchor="middle" font-size="9" fill="var(--ink)" font-family="ui-monospace,monospace">d=7 (101 qubits)</text>
+                    <path d="M100,64 L135,64" stroke="var(--good)" stroke-width="1.2" stroke-dasharray="2 2"/>
+                    <path d="M100,122 L135,122" stroke="var(--good)" stroke-width="1.2" stroke-dasharray="2 2"/>
+                    <text x="110" y="94" text-anchor="middle" font-size="10" fill="var(--good)" font-family="ui-monospace,monospace" transform="rotate(-90 110 94)">Λ=2.14</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">ε₇ isn't just smaller — it's smaller by the exact factor Λ predicts. That match is the below-threshold proof, not an assumption.</p>
+              </div>
+              <div class="text-panel">
+                <p><span class="mono">Λ = ε_d / ε_{d+2}</span> — how much the logical error rate improves when the code distance goes up by 2. The paper measures <b>Λ = 2.14 ± 0.02</b> going from distance-5 to distance-7.</p>
+                <div class="callout callout-code">
+                  <span class="label">a separate, additional milestone</span>
+                  <b>"Beyond break-even":</b> the logical qubit's information survives <b>2.4× longer</b> than the single best physical qubit among its 101 constituents survives on its own, unprotected.
+                </div>
+                <div class="compare-row" style="margin-top:14px;">
+                  <div class="compare-col">
+                    <svg viewBox="0 0 60 90" width="60" height="90"><rect x="20" y="52" width="20" height="38" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="1.6"/></svg>
+                    <div class="compare-label">best physical qubit</div>
+                  </div>
+                  <div class="compare-col">
+                    <svg viewBox="0 0 60 90" width="60" height="90"><rect x="20" y="0" width="20" height="90" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/></svg>
+                    <div class="compare-label">logical qubit (d=7), 2.4×</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>Syndrome measurements and the real-time decoder</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body">
+            <div class="entry-grid">
+              <div>
+                <div class="diagram-panel">
+                  <svg viewBox="0 0 240 220" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="20" width="80" height="46" rx="6" fill="var(--paper)" stroke="var(--rule)" stroke-width="1.3"/>
+                    <text x="60" y="40" text-anchor="middle" font-size="9" fill="var(--ink)" font-family="ui-monospace,monospace">qubit grid</text>
+                    <text x="60" y="53" text-anchor="middle" font-size="8" fill="var(--ink-soft)" font-family="ui-monospace,monospace">(1.1 μs / cycle)</text>
+                    <line x1="100" y1="43" x2="132" y2="43" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#dArr1)"/>
+                    <defs><marker id="dArr1" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--ink-soft)"/></marker></defs>
+                    <rect x="134" y="20" width="86" height="46" rx="6" fill="var(--measured-soft)" stroke="var(--measured)" stroke-width="1.6"/>
+                    <text x="177" y="40" text-anchor="middle" font-size="9" fill="var(--measured)" font-family="ui-monospace,monospace">syndrome</text>
+                    <text x="177" y="53" text-anchor="middle" font-size="8" fill="var(--measured)" font-family="ui-monospace,monospace">extraction</text>
+                    <line x1="177" y1="66" x2="177" y2="98" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#dArr2)"/>
+                    <defs><marker id="dArr2" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--ink-soft)"/></marker></defs>
+                    <rect x="120" y="100" width="100" height="46" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="170" y="120" text-anchor="middle" font-size="9" fill="var(--accent)" font-family="ui-monospace,monospace">real-time decoder</text>
+                    <text x="170" y="133" text-anchor="middle" font-size="8" fill="var(--accent)" font-family="ui-monospace,monospace">63 μs avg latency</text>
+                    <line x1="120" y1="123" x2="30" y2="123" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#dArr3)"/>
+                    <defs><marker id="dArr3" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--ink-soft)"/></marker></defs>
+                    <rect x="10" y="100" width="90" height="46" rx="6" fill="var(--good-soft)" stroke="var(--good)" stroke-width="1.6"/>
+                    <text x="55" y="120" text-anchor="middle" font-size="9" fill="var(--good)" font-family="ui-monospace,monospace">correction</text>
+                    <text x="55" y="133" text-anchor="middle" font-size="8" fill="var(--good)" font-family="ui-monospace,monospace">applied</text>
+                    <line x1="55" y1="100" x2="55" y2="66" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#dArr4)" stroke-dasharray="3 3"/>
+                    <defs><marker id="dArr4" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="var(--ink-soft)"/></marker></defs>
+                    <text x="120" y="180" text-anchor="middle" font-size="8.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">loop repeats — up to 1,000,000 cycles,</text>
+                    <text x="120" y="193" text-anchor="middle" font-size="8.5" fill="var(--ink-soft)" font-family="ui-monospace,monospace">decoder must never fall behind the grid</text>
+                  </svg>
+                </div>
+                <p class="diagram-caption">If decoding falls behind even once, the backlog only grows — this is why "real-time" is a genuine engineering hurdle.</p>
+              </div>
+              <div class="text-panel">
+                <p>A <b>syndrome measurement</b> is one round of the ancilla qubits' local checks. It doesn't reveal the data qubits' actual value — it reveals a checksum-like pattern of <i>where</i> an inconsistency showed up.</p>
+                <p>The <b>decoder</b> is the classical algorithm that takes the incoming stream of syndromes and infers the most likely underlying error pattern.</p>
+                <div class="callout callout-paper">
+                  <span class="label">why "real-time" is the hard part</span>
+                  The hardware keeps cycling every ~1.1 μs regardless of whether the classical decoder has kept up. Many earlier QEC demos decoded <i>offline</i>, after collecting all the data — sidestepping this timing problem entirely.
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+      </div>
+    </details>
+
+    <!-- ============ WHAT ============ -->
+    <details class="accordion-item" id="acc-what">
+      <summary>
+        <div class="acc-summary-text">
+          <span class="acc-title">2. What they did</span>
+          <span class="acc-sub">The core experiment, at a glance.</span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </summary>
+      <div class="accordion-body">
+        <p>Building a useful quantum computer requires stacking many physical qubits into logical qubits and making the logical qubit <i>safer</i> than any physical qubit alone — which only works below the critical threshold. Nobody had cleanly proven a real chip was on the right side of that line. That's the whole paper: <b>prove it, unambiguously, on real hardware.</b></p>
+        <div class="table-scroll" style="margin-top:14px;">
+          <table class="notation-table">
+            <thead><tr><th>Chip</th><th>Code built</th><th>Role</th></tr></thead>
+            <tbody>
+              <tr><td class="sym">105-qubit chip</td><td class="say">Distance-7 surface code — 49 data + 48 measure + 4 leakage-removal qubits</td><td class="say">Headline result: Λ, ε₇, break-even, real-time decoding</td></tr>
+              <tr><td class="sym">72-qubit chip</td><td class="say">Distance-5 surface code, plus distance-3/5 subgrids and repetition codes</td><td class="say">Comparison point for Λ; side experiments (error injection, drift, repetition-code stress test)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:14px; font-size:13px; color:var(--ink-soft);">Think of the 105-qubit chip as one giant logical qubit built from a roughly 7×7 patch of physical qubits.</p>
+      </div>
+    </details>
+
+    <!-- ============ HOW ============ -->
+    <details class="accordion-item" id="acc-how">
+      <summary>
+        <div class="acc-summary-text">
+          <span class="acc-title">3. How they did it</span>
+          <span class="acc-sub">Step-by-step mechanics, the below-threshold proof, and the extra stress tests — expand each.</span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </summary>
+      <div class="accordion-body">
+
+        <details class="term-item" open>
+          <summary><span>Running one experiment, step by step</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body text-panel">
+            <ol style="padding-left:20px; margin:0;">
+              <li style="margin-bottom:8px;"><b>Set the answer.</b> Prepare all the data qubits together so that, as a group, they represent a single logical 0 or logical 1.</li>
+              <li style="margin-bottom:8px;"><b>Run the clock.</b> Every 1.1 microseconds, the measure qubits check their neighbors and report a syndrome — without reading what the data qubits equal. Repeat up to a million times.</li>
+              <li style="margin-bottom:8px;"><b>Feed the checks to a decoder.</b> Every syndrome streams to a classical program (a neural network, or a statistical "matching" algorithm — they tried both) that guesses what errors happened and tracks whether the logical answer has flipped.</li>
+              <li style="margin-bottom:8px;"><b>Open the box at the end.</b> Measure the data qubits and compare the decoder's best guess against what was originally put in.</li>
+              <li><b>Repeat ~100,000 times</b> per data point, to get a reliable failure rate — this is ε_d, the logical error rate.</li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>Proving "below threshold" — measuring Λ</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body text-panel">
+            <p>They ran the identical experiment at distance-5 and distance-7 and compared the two failure rates directly. Distance-7 failed less often, by a very specific factor (<b>Λ = 2.14</b>) — and that factor matching the theoretical prediction is the actual proof. Not "we think this works," but "we measured two numbers and they have the mathematically expected relationship."</p>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>Breaking things on purpose</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body text-panel">
+            <ul style="padding-left:20px; margin:0;">
+              <li style="margin-bottom:8px;"><b>Injected fake errors</b> at controlled strengths on data and measure qubits, to confirm the theory's predicted curve shape between physical error rate, code distance, and logical error rate.</li>
+              <li style="margin-bottom:8px;"><b>Built a full error budget</b> — a simulation of every known noise source (gate errors, measurement errors, "leakage" to an unused third energy level, correlated errors between neighboring qubits) — and checked how much of the measured error each piece explains. Result: mostly explained, ~20% left over.</li>
+              <li><b>Tested stability over 15 hours</b>, repeating the same measurement to rule out drift or degradation during long runs.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="term-item">
+          <summary><span>Stress-testing with the repetition code — and finding the noise floor</span><span class="term-chevron">&rsaquo;</span></summary>
+          <div class="term-body text-panel">
+            <p>To hunt for extremely rare failure modes too small to see at distance-7, they ran a much simpler, cheaper 1D repetition code (the "00000 vs 11111" idea) pushed to <b>distance-29</b>, for <b>5.5 hours straight, 2×10¹⁰ total cycles</b>.</p>
+            <div class="callout callout-paper" style="margin-top:10px;">
+              <span class="label">what they found</span>
+              Roughly once an hour, a burst of errors hit ~30 neighboring qubits simultaneously — not random independent noise, but something physically disturbing a whole neighborhood at once (the leading suspect: a cosmic ray or radioactive decay depositing energy in the chip). This sets a hard floor (~10⁻¹⁰) that adding more qubits alone won't fix.
+            </div>
+          </div>
+        </details>
+
+      </div>
+    </details>
+
+    <!-- ============ WHY ============ -->
+    <details class="accordion-item" id="acc-why">
+      <summary>
+        <div class="acc-summary-text">
+          <span class="acc-title">4. Why it matters</span>
+          <span class="acc-sub">Tying the pieces together.</span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </summary>
+      <div class="accordion-body text-panel">
+        <ul style="padding-left:20px; margin:0;">
+          <li style="margin-bottom:8px;"><b>Below threshold (Λ&gt;1):</b> proves the "more qubits = better" strategy actually works on real hardware, not just in theory.</li>
+          <li style="margin-bottom:8px;"><b>Beyond break-even (2.4×):</b> proves it's already a net win over the best unprotected physical qubit, not merely "trending the right way."</li>
+          <li style="margin-bottom:8px;"><b>Real-time decoding:</b> proves the classical side can keep up — a separate, practical requirement for ever running a real algorithm.</li>
+          <li><b>The repetition-code stress test:</b> proves the core strategy works, but surfaces a new physical obstacle (correlated error bursts) that still needs solving before this scales to a full fault-tolerant computer.</li>
+        </ul>
+        <div class="callout callout-code" style="margin-top:14px;">
+          <span class="label">bottom line</span>
+          The core physics of error correction is confirmed to work as promised — but there's a newly identified, real obstacle standing between here and a full-scale fault-tolerant quantum computer.
+        </div>
+      </div>
+    </details>
+
+    <!-- ============ RESULTS TABLE ============ -->
+    <details class="accordion-item" id="acc-results">
+      <summary>
+        <div class="acc-summary-text">
+          <span class="acc-title">5. Results, translated</span>
+          <span class="acc-sub">Every headline number from the paper, in one table.</span>
+        </div>
+        <span class="acc-chevron">+</span>
+      </summary>
+      <div class="accordion-body">
+        <div class="table-scroll">
+          <table class="notation-table">
+            <thead><tr><th>Claim</th><th>What it means</th></tr></thead>
+            <tbody>
+              <tr><td class="sym">Λ = 2.14 ± 0.02</td><td class="say">Going from d=5 to d=7 cut the logical error rate by ~2.14×. Direct, measured evidence of below-threshold operation.</td></tr>
+              <tr><td class="sym">0.143% ± 0.003% / cycle</td><td class="say">The distance-7 logical qubit (101 physical transmons) fails about 1.4 times per 1,000 QEC cycles — the headline ε₇ number.</td></tr>
+              <tr><td class="sym">Beyond break-even, 2.4×</td><td class="say">The logical qubit survives 2.4× longer than its single best constituent physical qubit — a net win, not just a trend.</td></tr>
+              <tr><td class="sym">63 μs latency, 10⁶ cycles</td><td class="say">The decoder corrects live, comfortably inside the 1.1 μs cycle time, sustained over up to a million cycles without falling behind.</td></tr>
+              <tr><td class="sym">Repetition codes to d=29</td><td class="say">A simpler 1D cousin of the surface code, pushed further as a magnifying glass for rare failure modes.</td></tr>
+              <tr><td class="sym">Correlated errors ~1/hour</td><td class="say">Rare bursts where many qubits fail together (suspected: cosmic rays), setting a noise floor around 10⁻¹⁰ — flagged as unsolved, not fixed by this code.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-code" style="margin-top:16px;">
+          <span class="label">still open, for your data-availability review</span>
+          This breakdown covers the physics claims only. Whether this specific paper carries an explicit Data/Code Availability statement — and how it should be classified for the literature review — hasn't been checked yet.
+        </div>
+      </div>
+    </details>
+
+  </main>
+
+  <a href="#" id="back-link" class="back-link">← Back</a>
+
+</div>
+
+<script src="js/main.js"></script>
+
+</body>
+</html>

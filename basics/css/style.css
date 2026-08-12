@@ -694,3 +694,73 @@
     text-decoration-thickness: 1.5px; text-underline-offset: 2px;
     padding: 1px 3px; border-radius: 3px;
   }
+
+  /* ---------- top-level accordion (Terminologies / What / How / Why / Results) ---------- */
+  .accordion { display: flex; flex-direction: column; gap: 12px; }
+  details.accordion-item {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  details.accordion-item[open] { border-color: var(--accent); }
+  details.accordion-item > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    user-select: none;
+  }
+  details.accordion-item > summary::-webkit-details-marker { display: none; }
+  details.accordion-item > summary::marker { content: ""; }
+  details.accordion-item > summary:hover { background: var(--accent-soft); }
+  details.accordion-item[open] > summary { border-bottom: 1px solid var(--rule); }
+  .acc-summary-text { display: flex; flex-direction: column; gap: 3px; }
+  .acc-summary-text .acc-title {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 19px; font-weight: 600; color: var(--ink);
+  }
+  .acc-summary-text .acc-sub { font-size: 12.5px; color: var(--ink-soft); }
+  .acc-chevron {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 15px; font-weight: 700;
+    transition: transform 0.16s ease, background 0.16s ease, color 0.16s ease;
+  }
+  details.accordion-item[open] > summary .acc-chevron { transform: rotate(45deg); background: var(--accent); color: var(--paper-raised); }
+  .accordion-body { padding: 6px 22px 24px; }
+
+  /* ---------- nested term accordion (used inside Terminologies / How) ---------- */
+  details.term-item {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--paper);
+    margin-bottom: 10px;
+  }
+  details.term-item:last-child { margin-bottom: 0; }
+  details.term-item[open] { border-color: var(--accent); }
+  details.term-item > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--accent);
+    user-select: none;
+  }
+  details.term-item > summary::-webkit-details-marker { display: none; }
+  details.term-item > summary::marker { content: ""; }
+  details.term-item > summary:hover { background: var(--accent-soft); }
+  details.term-item > summary .term-chevron { font-size: 11px; color: var(--ink-soft); transition: transform 0.15s ease; flex-shrink: 0; }
+  details.term-item[open] > summary .term-chevron { transform: rotate(90deg); color: var(--accent); }
+  .term-body { padding: 6px 16px 18px; }
